@@ -33,6 +33,7 @@ use App\Http\Controllers\Receptionist\RoomController as ReceptionistRoomControll
 use App\Http\Controllers\Receptionist\RoomRateController;
 use App\Http\Controllers\Receptionist\RoomTypeController;
 use App\Http\Controllers\Receptionist\ServiceOrderController as ReceptionistServiceOrderController;
+use App\Http\Controllers\Receptionist\WebsiteContentController as ReceptionistWebsiteContentController;
 use App\Http\Controllers\RoomService\AccessController;
 use App\Http\Controllers\RoomService\BillController;
 use App\Http\Controllers\RoomService\FoodOrderController as RoomServiceFoodOrderController;
@@ -144,6 +145,15 @@ Route::prefix('receptionist')->name('receptionist.')->middleware(['auth', 'activ
     Route::get('/guest-requests', [ReceptionistGuestRequestController::class, 'index'])->name('guest-requests.index');
     Route::get('/guest-requests/{guestRequest}', [ReceptionistGuestRequestController::class, 'show'])->name('guest-requests.show');
     Route::post('/guest-requests/{guestRequest}/status', [ReceptionistGuestRequestController::class, 'updateStatus'])->name('guest-requests.status');
+
+    Route::get('/website', [ReceptionistWebsiteContentController::class, 'index'])->name('website.index');
+    Route::put('/website/settings', [ReceptionistWebsiteContentController::class, 'updateSettings'])->name('website.settings.update');
+    Route::post('/website/contents', [ReceptionistWebsiteContentController::class, 'storeContent'])->name('website.contents.store');
+    Route::put('/website/contents/{websiteContent}', [ReceptionistWebsiteContentController::class, 'updateContent'])->name('website.contents.update');
+    Route::delete('/website/contents/{websiteContent}', [ReceptionistWebsiteContentController::class, 'destroyContent'])->name('website.contents.destroy');
+    Route::post('/website/gallery', [ReceptionistWebsiteContentController::class, 'storeGallery'])->name('website.gallery.store');
+    Route::put('/website/gallery/{galleryImage}', [ReceptionistWebsiteContentController::class, 'updateGallery'])->name('website.gallery.update');
+    Route::delete('/website/gallery/{galleryImage}', [ReceptionistWebsiteContentController::class, 'destroyGallery'])->name('website.gallery.destroy');
 });
 
 Route::prefix('owner')->name('owner.')->middleware(['auth', 'active', 'role:owner'])->group(function (): void {

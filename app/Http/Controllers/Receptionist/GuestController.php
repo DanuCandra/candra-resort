@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Receptionist;
 use App\Enums\StayStatus;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Stay;
 use App\Models\User;
@@ -124,7 +125,7 @@ class GuestController extends Controller
             ->where('role', UserRole::Guest->value)
             ->findOrFail($guest);
 
-        $stays = Stay::query()
+        $stayQuery = Stay::query()
             ->where(function ($query) use ($guestAccount): void {
                 $query->where('guest_id', $guestAccount->id);
                 if (filled($guestAccount->phone)) {
@@ -132,20 +133,37 @@ class GuestController extends Controller
                         $walkInQuery->whereNull('guest_id')->where('guest_phone', $guestAccount->phone);
                     });
                 }
-            })
+            });
+        $reservationQuery = Reservation::query()
+            ->where(function ($query) use ($guestAccount, $stayQuery): void {
+                $query->where('guest_id', $guestAccount->id)
+                    ->orWhereIn('id', (clone $stayQuery)->select('reservation_id'));
+            });
+        $guestMetrics = [
+            'reservations' => (clone $reservationQuery)->count(),
+            'stays' => (clone $stayQuery)->count(),
+            'nights' => (int) (clone $reservationQuery)->sum('total_nights'),
+            'paid' => (float) Payment::query()
+                ->where('status', 'paid')
+                ->whereIn('reservation_id', (clone $reservationQuery)->select('id'))
+                ->sum('amount'),
+        ];
+        $activeStay = (clone $stayQuery)
+            ->where('status', StayStatus::Active->value)
+            ->with('room:id,room_number')
+            ->latest('check_in_at')
+            ->first();
+        $stays = $stayQuery
             ->with(['reservation:id,booking_code,guest_email,check_in_date,check_out_date,total_nights', 'room:id,room_number'])
             ->latest('check_in_at')
-            ->get();
-
-        $reservations = Reservation::query()
-            ->where(function ($query) use ($guestAccount, $stays): void {
-                $query->where('guest_id', $guestAccount->id)
-                    ->orWhereIn('id', $stays->pluck('reservation_id'));
-            })
+            ->paginate(10, ['*'], 'stays_page')
+            ->withQueryString();
+        $reservations = $reservationQuery
             ->with(['roomType:id,name', 'room:id,room_number', 'stay:id,reservation_id,status,check_in_at,check_out_at'])
             ->withSum(['payments as paid_total' => fn ($query) => $query->where('status', 'paid')], 'amount')
             ->latest()
-            ->get();
+            ->paginate(10, ['*'], 'reservations_page')
+            ->withQueryString();
 
         return view('receptionist.guests.show', [
             'guestType' => 'account',
@@ -158,6 +176,8 @@ class GuestController extends Controller
             ],
             'reservations' => $reservations,
             'stays' => $stays,
+            'guestMetrics' => $guestMetrics,
+            'activeStay' => $activeStay,
         ]);
     }
 
@@ -165,31 +185,56 @@ class GuestController extends Controller
     {
         abort_if($stay->guest_id !== null, 404);
 
-        $stays = Stay::query()
+        $stayQuery = Stay::query()
             ->whereNull('guest_id')
-            ->where('guest_phone', $stay->guest_phone)
+            ->where('guest_phone', $stay->guest_phone);
+        $reservationQuery = Reservation::query()
+            ->whereIn('id', (clone $stayQuery)->select('reservation_id'));
+        $guestMetrics = [
+            'reservations' => (clone $reservationQuery)->count(),
+            'stays' => (clone $stayQuery)->count(),
+            'nights' => (int) (clone $reservationQuery)->sum('total_nights'),
+            'paid' => (float) Payment::query()
+                ->where('status', 'paid')
+                ->whereIn('reservation_id', (clone $reservationQuery)->select('id'))
+                ->sum('amount'),
+        ];
+        $activeStay = (clone $stayQuery)
+            ->where('status', StayStatus::Active->value)
+            ->with('room:id,room_number')
+            ->latest('check_in_at')
+            ->first();
+        $latestWithEmail = Reservation::query()
+            ->whereIn('id', (clone $stayQuery)->select('reservation_id'))
+            ->whereNotNull('guest_email')
+            ->where('guest_email', '!=', '')
+            ->latest()
+            ->value('guest_email');
+        $stays = $stayQuery
             ->with(['reservation:id,booking_code,guest_email,check_in_date,check_out_date,total_nights', 'room:id,room_number'])
             ->latest('check_in_at')
-            ->get();
-        $reservations = Reservation::query()
-            ->whereIn('id', $stays->pluck('reservation_id'))
+            ->paginate(10, ['*'], 'stays_page')
+            ->withQueryString();
+        $reservations = $reservationQuery
             ->with(['roomType:id,name', 'room:id,room_number', 'stay:id,reservation_id,status,check_in_at,check_out_at'])
             ->withSum(['payments as paid_total' => fn ($query) => $query->where('status', 'paid')], 'amount')
             ->latest()
-            ->get();
-        $latestWithEmail = $stays->first(fn (Stay $item): bool => filled($item->reservation?->guest_email));
+            ->paginate(10, ['*'], 'reservations_page')
+            ->withQueryString();
 
         return view('receptionist.guests.show', [
             'guestType' => 'walk_in',
             'guest' => [
-                'name' => $stays->first()->guest_name,
+                'name' => $stay->guest_name,
                 'phone' => $stay->guest_phone,
-                'email' => $latestWithEmail?->reservation?->guest_email,
+                'email' => $latestWithEmail,
                 'registered_at' => null,
                 'is_active_account' => false,
             ],
             'reservations' => $reservations,
             'stays' => $stays,
+            'guestMetrics' => $guestMetrics,
+            'activeStay' => $activeStay,
         ]);
     }
 }

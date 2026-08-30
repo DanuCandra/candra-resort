@@ -8,5 +8,5 @@
         @empty
             <div class="col-12 text-center"><h4>Informasi fasilitas sedang disiapkan.</h4></div>
         @endforelse
-    </div></div></section>
+    </div><div class="row"><div class="col-12 d-flex justify-content-center">{{ $facilities->links() }}</div></div></div></section>
 @endsection

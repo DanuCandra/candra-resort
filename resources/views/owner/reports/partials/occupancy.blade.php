@@ -28,4 +28,4 @@
     @empty
         <tr><td colspan="4" class="text-center text-muted py-4">Belum ada periode okupansi yang dapat dihitung.</td></tr>
     @endforelse
-</tbody></table></div><small class="text-muted">Catatan: kapasitas historis menggunakan jumlah kamar aktif saat laporan dibuka karena schema belum menyimpan riwayat aktivasi kamar.</small></div></div>
+</tbody></table></div>@if($rows->hasPages())<div class="mt-3">{{ $rows->links() }}</div>@endif<small class="text-muted">Catatan: kapasitas historis menggunakan jumlah kamar aktif saat laporan dibuka karena schema belum menyimpan riwayat aktivasi kamar.</small></div></div>

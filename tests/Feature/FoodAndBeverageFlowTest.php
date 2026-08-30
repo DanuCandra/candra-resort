@@ -34,7 +34,7 @@ class FoodAndBeverageFlowTest extends TestCase
         $category = FoodCategory::where('slug', 'main-course')->firstOrFail();
         $this->actingAs($receptionist)->post(route('receptionist.menu-items.store'), [
             'food_category_id' => $category->id,
-            'name' => 'Nasi Goreng Candra',
+            'name' => 'Nasi Goreng Test CRUD',
             'description' => 'Nasi goreng khas resort',
             'price' => 85000,
             'preparation_minutes' => 20,
@@ -44,7 +44,7 @@ class FoodAndBeverageFlowTest extends TestCase
 
         $this->assertDatabaseHas('menu_items', [
             'food_category_id' => $category->id,
-            'slug' => 'nasi-goreng-candra',
+            'slug' => 'nasi-goreng-test-crud',
             'price' => 85000,
             'is_available' => true,
         ]);

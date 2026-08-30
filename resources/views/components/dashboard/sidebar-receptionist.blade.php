@@ -51,5 +51,5 @@
         </a>
     </li>
     <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('receptionist.folios.*') ? 'active' : '' }}" href="{{ route('receptionist.folios.index') }}"><span><i class="ti ti-receipt"></i></span><span class="hide-menu">Folio Tamu</span></a></li>
-    <li class="sidebar-item"><a class="sidebar-link" href="javascript:void(0)"><span><i class="ti ti-world"></i></span><span class="hide-menu">Konten Website</span><span class="badge bg-light-warning text-warning ms-auto">Segera</span></a></li>
+    <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('receptionist.website.*') ? 'active' : '' }}" href="{{ route('receptionist.website.index') }}"><span><i class="ti ti-world"></i></span><span class="hide-menu">Konten Website</span></a></li>
 </ul>

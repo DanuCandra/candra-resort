@@ -4,8 +4,8 @@ namespace App\Http\Controllers\RoomService;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoomService\FoodOrderRequest;
-use App\Models\FoodCategory;
 use App\Models\FoodOrder;
+use App\Models\MenuItem;
 use App\Services\FoodOrderService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,13 +15,13 @@ class FoodOrderController extends Controller
 {
     public function index(Request $request): View
     {
-        $categories = FoodCategory::query()->where('is_active', true)
-            ->whereHas('menuItems', fn ($query) => $query->where('is_active', true)->where('is_available', true))
-            ->with(['menuItems' => fn ($query) => $query->where('is_active', true)->where('is_available', true)->orderBy('sort_order')->orderBy('name')])
-            ->orderBy('sort_order')->orderBy('name')->get();
+        $menuItems = MenuItem::query()->with('category')
+            ->where('is_active', true)->where('is_available', true)
+            ->orderBy('sort_order')->orderBy('name')->paginate(12)->withQueryString();
+        $categories = $menuItems->getCollection()->groupBy(fn (MenuItem $item): string => $item->category?->name ?? 'Menu Lainnya');
         $access = $request->attributes->get('roomServiceAccess');
 
-        return view('room-service.food.index', compact('categories', 'access'));
+        return view('room-service.food.index', compact('categories', 'menuItems', 'access'));
     }
 
     public function store(FoodOrderRequest $request, FoodOrderService $service): RedirectResponse

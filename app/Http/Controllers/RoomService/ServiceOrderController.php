@@ -15,10 +15,12 @@ class ServiceOrderController extends Controller
 {
     public function index(Request $request): View
     {
-        $services = HotelService::query()->where('is_active', true)->where('is_available', true)->orderBy('sort_order')->orderBy('name')->get()->groupBy('category');
+        $servicePaginator = HotelService::query()->where('is_active', true)->where('is_available', true)
+            ->orderBy('sort_order')->orderBy('name')->paginate(12)->withQueryString();
+        $services = $servicePaginator->getCollection()->groupBy('category');
         $access = $request->attributes->get('roomServiceAccess');
 
-        return view('room-service.services.index', compact('services', 'access'));
+        return view('room-service.services.index', compact('services', 'servicePaginator', 'access'));
     }
 
     public function store(ServiceOrderRequest $request, ServiceOrderService $service): RedirectResponse

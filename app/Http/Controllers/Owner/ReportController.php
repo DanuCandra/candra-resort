@@ -13,6 +13,7 @@ use App\Models\ServiceOrder;
 use App\Services\OwnerReportService;
 use App\Support\ReportPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -76,7 +77,7 @@ class ReportController extends Controller
         $period = ReportPeriod::fromRequest($request, $defaultPeriod);
         $data = match ($type) {
             'reservations' => $this->reservationData($period),
-            'occupancy' => $this->occupancyData($period),
+            'occupancy' => $this->occupancyData($period, $request),
             'revenue' => $this->revenueData($period),
             'payments' => $this->paymentData($period),
             'services' => $this->serviceData($period),
@@ -112,15 +113,28 @@ class ReportController extends Controller
     }
 
     /** @return array<string, mixed> */
-    private function occupancyData(ReportPeriod $period): array
+    private function occupancyData(ReportPeriod $period, Request $request): array
     {
         $occupancy = $this->reports->occupancy($period);
+        $dailyRows = collect($occupancy['daily'])->reverse()->values();
+        $page = LengthAwarePaginator::resolveCurrentPage('occupancy_page');
+        $rows = new LengthAwarePaginator(
+            $dailyRows->forPage($page, 15)->values(),
+            $dailyRows->count(),
+            15,
+            $page,
+            [
+                'path' => $request->url(),
+                'pageName' => 'occupancy_page',
+                'query' => $request->query(),
+            ]
+        );
 
         return [
             'title' => 'Laporan Okupansi',
             'description' => 'Okupansi aktual berdasarkan masa inap yang telah check-in.',
             'occupancy' => $occupancy,
-            'rows' => collect($occupancy['daily'])->reverse()->values(),
+            'rows' => $rows,
         ];
     }
 
@@ -172,12 +186,16 @@ class ReportController extends Controller
     /** @return array<string, mixed> */
     private function serviceData(ReportPeriod $period): array
     {
-        $foodOrders = FoodOrder::query()->with('room:id,room_number')
-            ->where('status', FoodOrderStatus::Completed->value)->whereBetween('completed_at', $period->bounds())
-            ->latest('completed_at')->get();
-        $serviceOrders = ServiceOrder::query()->with(['room:id,room_number', 'service:id,name'])
-            ->where('status', ServiceOrderStatus::Completed->value)->whereBetween('completed_at', $period->bounds())
-            ->latest('completed_at')->get();
+        $foodBase = FoodOrder::query()
+            ->where('status', FoodOrderStatus::Completed->value)
+            ->whereBetween('completed_at', $period->bounds());
+        $serviceBase = ServiceOrder::query()
+            ->where('status', ServiceOrderStatus::Completed->value)
+            ->whereBetween('completed_at', $period->bounds());
+        $foodOrders = (clone $foodBase)->with('room:id,room_number')
+            ->latest('completed_at')->paginate(10, ['*'], 'food_page')->withQueryString();
+        $serviceOrders = (clone $serviceBase)->with(['room:id,room_number', 'service:id,name'])
+            ->latest('completed_at')->paginate(10, ['*'], 'service_page')->withQueryString();
 
         return [
             'title' => 'Laporan Layanan',
@@ -186,10 +204,10 @@ class ReportController extends Controller
             'serviceOrders' => $serviceOrders,
             'serviceSummary' => $this->reports->serviceSummary($period),
             'metrics' => [
-                'food_orders' => $foodOrders->count(),
-                'food_amount' => (float) $foodOrders->sum('total_amount'),
-                'service_orders' => $serviceOrders->count(),
-                'service_amount' => (float) $serviceOrders->sum('total_amount'),
+                'food_orders' => (clone $foodBase)->count(),
+                'food_amount' => (float) (clone $foodBase)->sum('total_amount'),
+                'service_orders' => (clone $serviceBase)->count(),
+                'service_amount' => (float) (clone $serviceBase)->sum('total_amount'),
             ],
         ];
     }

@@ -10,9 +10,6 @@
     </x-dashboard.page-heading>
 
     @php
-        $paidTotal = $reservations->sum(fn ($reservation) => (float) ($reservation->paid_total ?? 0));
-        $totalNights = $reservations->sum('total_nights');
-        $activeStay = $stays->first(fn ($stay) => $stay->status === \App\Enums\StayStatus::Active);
         $reservationStatusLabels = [
             'pending_payment' => 'Menunggu Pembayaran', 'paid' => 'Sudah Dibayar', 'confirmed' => 'Dikonfirmasi',
             'checked_in' => 'Check-in', 'checked_out' => 'Check-out', 'cancelled' => 'Dibatalkan', 'no_show' => 'No Show',
@@ -28,7 +25,7 @@
                         <h4 class="fw-semibold mt-3 mb-1">{{ $guest['name'] }}</h4>
                         @if ($activeStay)
                             <span class="badge bg-light-success text-success">Sedang Menginap · Kamar {{ $activeStay->room?->room_number }}</span>
-                        @elseif ($stays->isNotEmpty())
+                        @elseif ($guestMetrics['stays'] > 0)
                             <span class="badge bg-light-info text-info">Pernah Menginap</span>
                         @else
                             <span class="badge bg-light-warning text-warning">Belum Pernah Check-in</span>
@@ -46,10 +43,10 @@
         <div class="col-xl-8">
             <div class="row">
                 @foreach ([
-                    ['Total Reservasi', $reservations->count(), 'ti-calendar-stats', 'primary'],
-                    ['Jumlah Check-in', $stays->count(), 'ti-login', 'success'],
-                    ['Total Malam', $totalNights, 'ti-moon', 'info'],
-                    ['Pembayaran Lunas', 'Rp'.number_format($paidTotal, 0, ',', '.'), 'ti-cash', 'warning'],
+                    ['Total Reservasi', $guestMetrics['reservations'], 'ti-calendar-stats', 'primary'],
+                    ['Jumlah Check-in', $guestMetrics['stays'], 'ti-login', 'success'],
+                    ['Total Malam', $guestMetrics['nights'], 'ti-moon', 'info'],
+                    ['Pembayaran Lunas', 'Rp'.number_format($guestMetrics['paid'], 0, ',', '.'), 'ti-cash', 'warning'],
                 ] as [$label, $value, $icon, $color])
                     <div class="col-md-6"><div class="card"><div class="card-body d-flex align-items-center"><span class="round-48 rounded bg-light-{{ $color }} d-flex align-items-center justify-content-center"><i class="ti {{ $icon }} fs-6 text-{{ $color }}"></i></span><div class="ms-3"><span class="text-muted">{{ $label }}</span><h4 class="fw-semibold mb-0">{{ $value }}</h4></div></div></div></div>
                 @endforeach
@@ -73,6 +70,9 @@
                     @empty
                         <div class="text-center text-muted py-4"><i class="ti ti-calendar-off fs-8 d-block mb-2"></i>Tamu ini sudah memiliki akun, tetapi belum pernah check-in.</div>
                     @endforelse
+                    @if ($stays->hasPages())
+                        <div class="mt-2">{{ $stays->links() }}</div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -101,6 +101,9 @@
                     </tbody>
                 </table>
             </div>
+            @if ($reservations->hasPages())
+                <div class="mt-3">{{ $reservations->links() }}</div>
+            @endif
         </div>
     </div>
 @endsection

@@ -22,14 +22,15 @@ class PageController extends Controller
     public function facilities(): View
     {
         return view('public.facilities', [
-            'facilities' => Facility::query()->where('is_active', true)->whereIn('scope', ['hotel', 'both'])->orderBy('sort_order')->get(),
+            'facilities' => Facility::query()->where('is_active', true)->whereIn('scope', ['hotel', 'both'])
+                ->orderBy('sort_order')->paginate(12),
         ]);
     }
 
     public function gallery(): View
     {
         return view('public.gallery', [
-            'images' => GalleryImage::query()->where('is_active', true)->orderBy('sort_order')->get(),
+            'images' => GalleryImage::query()->where('is_active', true)->orderBy('sort_order')->paginate(12),
         ]);
     }
 

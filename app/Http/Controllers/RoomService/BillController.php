@@ -11,11 +11,24 @@ class BillController extends Controller
     public function __invoke(Request $request): View
     {
         $access = $request->attributes->get('roomServiceAccess');
-        $access->load(['room', 'stay.folio.items', 'stay.folio.payments.method']);
+        $access->load(['room', 'stay.folio']);
+        $folio = $access->stay->folio;
+        $items = $folio?->items()
+            ->where('is_void', false)
+            ->latest('posted_at')
+            ->paginate(12, ['*'], 'items_page')
+            ->withQueryString();
+        $payments = $folio?->payments()
+            ->with('method')
+            ->latest()
+            ->paginate(10, ['*'], 'payments_page')
+            ->withQueryString();
 
         return view('room-service.bill.show', [
             'access' => $access,
-            'folio' => $access->stay->folio,
+            'folio' => $folio,
+            'items' => $items,
+            'payments' => $payments,
         ]);
     }
 }

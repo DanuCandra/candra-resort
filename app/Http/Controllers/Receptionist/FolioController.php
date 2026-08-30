@@ -31,10 +31,22 @@ class FolioController extends Controller
 
     public function show(Folio $folio): View
     {
-        $folio->load(['stay.room', 'reservation.roomType', 'items.postedBy', 'payments.method', 'payments.receivedBy']);
+        $folio->load(['stay.room', 'reservation.roomType']);
+        $items = $folio->items()
+            ->with('postedBy')
+            ->latest('posted_at')
+            ->paginate(15, ['*'], 'items_page')
+            ->withQueryString();
+        $payments = $folio->payments()
+            ->with(['method', 'receivedBy'])
+            ->latest()
+            ->paginate(10, ['*'], 'payments_page')
+            ->withQueryString();
 
         return view('receptionist.folios.show', [
             'folio' => $folio,
+            'items' => $items,
+            'payments' => $payments,
             'paymentMethods' => PaymentMethod::query()->where('channel', 'manual')->where('is_active', true)->orderBy('sort_order')->get(),
         ]);
     }

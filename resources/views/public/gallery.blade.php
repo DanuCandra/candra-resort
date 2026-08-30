@@ -10,5 +10,5 @@
                 <div class="col-lg-4 col-sm-6 mb-4"><div class="gallery-item set-bg" data-setbg="{{ asset('landing-lage/img/gallery/gallery-'.((($index - 1) % 4) + 1).'.jpg') }}"><div class="gi-text"><h3>Candra Experience</h3></div></div></div>
             @endforeach
         @endforelse
-    </div></div></section>
+    </div><div class="row"><div class="col-12 d-flex justify-content-center">{{ $images->links() }}</div></div></div></section>
 @endsection

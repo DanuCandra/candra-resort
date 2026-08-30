@@ -28,13 +28,16 @@
     </div></div></div>
 </div>
 <div class="card"><div class="card-body"><h5 class="fw-semibold mb-3">Pesanan Selesai Terbaru</h5><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Jenis</th><th>Kode</th><th>Layanan</th><th>Kamar</th><th>Selesai Pada</th><th class="text-end">Jumlah</th></tr></thead><tbody>
-    @foreach ($foodOrders->take(15) as $order)
+    @foreach ($foodOrders as $order)
         <tr><td><span class="badge bg-light-primary text-primary">F&B</span></td><td class="fw-semibold">{{ $order->order_code }}</td><td>Makanan & Minuman</td><td>{{ $order->room?->room_number ?? '-' }}</td><td>{{ $order->completed_at?->translatedFormat('d M Y H:i') ?? '-' }}</td><td class="text-end fw-semibold">Rp{{ number_format((float) $order->total_amount, 0, ',', '.') }}</td></tr>
     @endforeach
-    @foreach ($serviceOrders->take(15) as $order)
+    @foreach ($serviceOrders as $order)
         <tr><td><span class="badge bg-light-info text-info">Layanan</span></td><td class="fw-semibold">{{ $order->order_code }}</td><td>{{ $order->service?->name ?? '-' }}</td><td>{{ $order->room?->room_number ?? '-' }}</td><td>{{ $order->completed_at?->translatedFormat('d M Y H:i') ?? '-' }}</td><td class="text-end fw-semibold">Rp{{ number_format((float) $order->total_amount, 0, ',', '.') }}</td></tr>
     @endforeach
     @if ($foodOrders->isEmpty() && $serviceOrders->isEmpty())
         <tr><td colspan="6" class="text-center text-muted py-4">Belum ada pesanan selesai pada periode ini.</td></tr>
     @endif
-</tbody></table></div></div></div>
+</tbody></table></div>
+@if($foodOrders->hasPages())<div class="mt-3"><small class="text-muted d-block mb-2">Halaman pesanan F&amp;B</small>{{ $foodOrders->links() }}</div>@endif
+@if($serviceOrders->hasPages())<div class="mt-3"><small class="text-muted d-block mb-2">Halaman pesanan layanan</small>{{ $serviceOrders->links() }}</div>@endif
+</div></div>
