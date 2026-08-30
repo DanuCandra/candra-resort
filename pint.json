@@ -1,0 +1,8 @@
+{
+    "exclude": [
+        "bootstrap/cache",
+        "public",
+        "resources/views/template-dashboard",
+        "resources/views/template-landing"
+    ]
+}

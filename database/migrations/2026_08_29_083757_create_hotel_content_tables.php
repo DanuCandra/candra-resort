@@ -6,22 +6,51 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('hotel_content_tables', function (Blueprint $table) {
+        Schema::create('hotel_settings', function (Blueprint $table) {
             $table->id();
+            $table->string('setting_group', 100)->default('general')->index();
+            $table->string('setting_key', 150)->unique();
+            $table->longText('setting_value')->nullable();
+            $table->string('value_type', 30)->default('string'); // string|integer|decimal|boolean|json|time
+            $table->text('description')->nullable();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
+        });
+
+        Schema::create('website_contents', function (Blueprint $table) {
+            $table->id();
+            $table->string('section', 100)->index(); // hero|about|contact|footer|etc
+            $table->string('content_key', 150)->unique();
+            $table->string('title')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('image_path')->nullable();
+            $table->json('metadata')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true)->index();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('gallery_images', function (Blueprint $table) {
+            $table->id();
+            $table->string('image_path');
+            $table->string('caption')->nullable();
+            $table->string('alt_text')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true)->index();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('hotel_content_tables');
+        Schema::dropIfExists('gallery_images');
+        Schema::dropIfExists('website_contents');
+        Schema::dropIfExists('hotel_settings');
     }
 };

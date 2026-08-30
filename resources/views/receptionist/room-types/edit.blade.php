@@ -1,0 +1,9 @@
+@extends('layouts.main')
+@section('title', 'Edit Tipe Kamar')
+@section('content')
+    <x-dashboard.page-heading title="Edit Tipe Kamar" :description="$roomType->name" :back="route('receptionist.room-types.show', $roomType)" />
+    <div class="card"><div class="card-body"><form method="POST" enctype="multipart/form-data" action="{{ route('receptionist.room-types.update', $roomType) }}">@csrf @method('PUT') @include('receptionist.room-types.form')<x-dashboard.form-actions :cancel="route('receptionist.room-types.show', $roomType)" label="Perbarui Tipe Kamar" /></form></div></div>
+    @if($roomType->images->isNotEmpty())
+        <div class="card"><div class="card-body"><h5 class="card-title fw-semibold mb-4">Kelola Galeri</h5><div class="row g-3">@foreach($roomType->images as $image)<div class="col-md-4 col-xl-3"><div class="border rounded overflow-hidden"><img src="{{ asset('storage/'.$image->image_path) }}" alt="{{ $image->alt_text }}" class="w-100 object-fit-cover" style="height:160px"><div class="p-3"><div class="mb-2">@if($image->is_primary)<span class="badge bg-light-primary text-primary">Foto utama</span>@else<span class="text-muted fs-2">Foto galeri</span>@endif</div><div class="d-flex gap-2">@unless($image->is_primary)<form method="POST" action="{{ route('receptionist.room-types.images.primary', [$roomType, $image]) }}">@csrf<button class="btn btn-sm btn-outline-primary">Jadikan utama</button></form>@endunless<form method="POST" action="{{ route('receptionist.room-types.images.destroy', [$roomType, $image]) }}" data-confirm="File foto ini akan dihapus." data-confirm-title="Hapus foto?">@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger"><i class="ti ti-trash"></i></button></form></div></div></div></div>@endforeach</div></div></div>
+    @endif
+@endsection

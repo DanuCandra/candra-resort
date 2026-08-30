@@ -1,0 +1,6 @@
+@extends('layouts.main')
+@section('title','Check-In')
+@section('content')
+    <x-dashboard.page-heading title="Antrian Check-In" description="Reservasi terkonfirmasi yang sudah mencapai tanggal kedatangan."/>
+    <div class="card"><div class="card-body"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Kode</th><th>Tamu</th><th>Tanggal</th><th>Tipe Kamar</th><th>Pembayaran</th><th></th></tr></thead><tbody>@forelse($reservations as $reservation)<tr><td class="fw-semibold">{{ $reservation->booking_code }}</td><td>{{ $reservation->guest_name }}<small class="d-block text-muted">{{ $reservation->guest_phone }}</small></td><td>{{ $reservation->check_in_date->translatedFormat('d M Y') }}</td><td>{{ $reservation->roomType->name }}<small class="d-block text-muted">{{ $reservation->room?'Kamar '.$reservation->room->room_number:'Pilih saat check-in' }}</small></td><td>{{ str($reservation->payment_status->value)->title() }}</td><td class="text-end"><a href="{{ route('receptionist.checkin.create',$reservation) }}" class="btn btn-sm btn-primary">Proses Check-In</a></td></tr>@empty<tr><td colspan="6" class="text-center text-muted py-5">Tidak ada tamu yang menunggu check-in.</td></tr>@endforelse</tbody></table></div>{{ $reservations->links() }}</div></div>
+@endsection

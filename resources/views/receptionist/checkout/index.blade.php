@@ -1,0 +1,6 @@
+@extends('layouts.main')
+@section('title','Check-Out')
+@section('content')
+    <x-dashboard.page-heading title="Stay Aktif & Check-Out" description="Tinjau folio dan selesaikan masa menginap tamu."/>
+    <div class="card"><div class="card-body"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Tamu</th><th>Kamar</th><th>Reservasi</th><th>Check-In</th><th>Saldo Folio</th><th></th></tr></thead><tbody>@forelse($stays as $stay)<tr><td>{{ $stay->guest_name }}<small class="d-block text-muted">{{ $stay->guest_phone }}</small></td><td>Kamar {{ $stay->room->room_number }}</td><td>{{ $stay->reservation->booking_code }}<small class="d-block text-muted">Keluar {{ $stay->reservation->check_out_date->translatedFormat('d M Y') }}</small></td><td>{{ $stay->check_in_at?->translatedFormat('d M Y H:i') }}</td><td>Rp{{ number_format((float)$stay->folio->balance_amount,0,',','.') }}</td><td class="text-end"><a href="{{ route('receptionist.checkout.create',$stay) }}" class="btn btn-sm btn-warning">Proses Check-Out</a></td></tr>@empty<tr><td colspan="6" class="text-center text-muted py-5">Tidak ada stay aktif.</td></tr>@endforelse</tbody></table></div>{{ $stays->links() }}</div></div>
+@endsection

@@ -1,0 +1,3 @@
+@extends('layouts.main')
+@section('title','Tambah Layanan Hotel')
+@section('content')<x-dashboard.page-heading title="Tambah Layanan Hotel" description="Tambahkan spa, laundry, transport, extra bed, atau layanan lain." :back="route('receptionist.hotel-services.index')"/><div class="card"><div class="card-body"><form method="POST" enctype="multipart/form-data" action="{{ route('receptionist.hotel-services.store') }}">@csrf @include('receptionist.hotel-services.form')<x-dashboard.form-actions :cancel="route('receptionist.hotel-services.index')" label="Simpan Layanan"/></form></div></div>@endsection

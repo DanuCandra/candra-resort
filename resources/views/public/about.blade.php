@@ -1,0 +1,7 @@
+@extends('layouts.guest')
+@section('title', 'Tentang Kami · Candra Resort')
+@section('content')
+    <section class="page-hero" style="background-image: url('{{ asset('landing-lage/img/hero/hero-3.jpg') }}')"><div class="container text-center"><h1>Tentang Candra Resort</h1><p>Keramahtamahan yang terasa seperti rumah.</p></div></section>
+    <section class="aboutus-page-section about-content-spaced"><div class="container"><div class="about-page-text"><div class="row"><div class="col-lg-6"><div class="ap-title"><h2>Selamat Datang di Candra Resort</h2><p>{{ $contents->first()?->content ?? 'Candra Resort dibangun untuk menghadirkan tempat istirahat yang tenang dengan pelayanan personal, fasilitas lengkap, dan suasana yang menghubungkan tamu dengan pengalaman terbaik di sekitarnya.' }}</p></div></div><div class="col-lg-5 offset-lg-1"><ul class="ap-services"><li><i class="icon_check"></i> Kamar nyaman dan terawat</li><li><i class="icon_check"></i> Layanan tamu selama menginap</li><li><i class="icon_check"></i> Food & Beverage</li><li><i class="icon_check"></i> Proses reservasi yang mudah</li></ul></div></div></div></div></section>
+    <section class="video-section set-bg" data-setbg="{{ asset('landing-lage/img/video-bg.jpg') }}"><div class="container"><div class="row"><div class="col-lg-12"><div class="video-text"><h2>Discover Our Hotel & Services.</h2><p>Temukan pengalaman baru bersama Candra Resort.</p></div></div></div></div></section>
+@endsection

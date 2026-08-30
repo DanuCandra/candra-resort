@@ -1,0 +1,12 @@
+@extends('layouts.guest')
+@section('title','Pembayaran '.$reservation->booking_code)
+@section('content')
+    <section class="auth-section"><div class="container"><div class="row justify-content-center"><div class="col-lg-7"><div class="auth-card text-center"><p class="text-uppercase" style="letter-spacing:2px;color:#dfa974;font-weight:700">Pembayaran Reservasi</p><h2>{{ $reservation->booking_code }}</h2><p>{{ $reservation->roomType->name }} · {{ $reservation->total_nights }} malam</p><h3 class="my-4" style="color:#dfa974">Rp{{ number_format((float)$reservation->grand_total,0,',','.') }}</h3>
+        @if($reservation->payment_status->value==='paid')<div class="alert alert-success"><strong>Pembayaran telah dikonfirmasi.</strong><br>Reservasi Anda siap diproses Receptionist.</div><a href="{{ route('guest.reservations.show',$reservation) }}" class="sona-button d-inline-block">Lihat Reservasi</a>
+        @elseif(!$configurationReady)<div class="alert alert-warning text-left"><strong>Konfigurasi Midtrans belum lengkap.</strong><br>Isi Client Key dan Server Key pada <code>.env</code>, lalu muat ulang halaman ini.</div><a href="{{ route('guest.reservations.show',$reservation) }}" class="btn btn-outline-secondary">Kembali</a>
+        @elseif($checkout)<p class="text-muted">Jendela pembayaran aman Midtrans akan dibuka. Status akhir selalu diverifikasi melalui notifikasi server.</p><button id="pay-button" class="sona-button w-100">Pilih Metode & Bayar</button><a href="{{ route('guest.reservations.show',$reservation) }}" class="btn btn-link mt-3">Periksa status pembayaran</a>@else<div class="alert alert-danger">Reservasi ini tidak lagi dapat dibayar.</div>@endif
+    </div></div></div></div></section>
+@endsection
+@if($checkout)
+    @push('scripts')<script src="{{ $snapUrl }}" data-client-key="{{ $clientKey }}"></script><script>document.getElementById('pay-button')?.addEventListener('click',function(){window.snap.pay({{ Illuminate\Support\Js::from($checkout['snap_token']) }},{onSuccess:function(){window.location.href={{ Illuminate\Support\Js::from(route('guest.reservations.show',$reservation)) }}},onPending:function(){window.location.href={{ Illuminate\Support\Js::from(route('guest.reservations.show',$reservation)) }}},onError:function(){window.appNotyf?.error('Pembayaran gagal diproses. Silakan coba kembali.')},onClose:function(){window.appNotyf?.error('Pembayaran belum diselesaikan.')}})});</script>@endpush
+@endif

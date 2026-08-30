@@ -1,0 +1,6 @@
+@extends('layouts.guest')
+@section('title', 'Kontak · Candra Resort')
+@section('content')
+    <section class="page-hero" style="background-image: url('{{ asset('landing-lage/img/hero/hero-1.jpg') }}')"><div class="container text-center"><h1>Hubungi Kami</h1><p>Kami siap membantu merencanakan masa inap Anda.</p></div></section>
+    <section class="contact-section spad"><div class="container"><div class="row"><div class="col-lg-4"><div class="contact-text"><div class="section-title"><span>Kontak</span><h2>Candra Resort</h2></div><p>Hubungi tim kami untuk informasi kamar, fasilitas, atau kebutuhan khusus.</p><table><tbody><tr><td class="c-o">Alamat:</td><td>{{ $settings->get('hotel.address', 'Indonesia') }}</td></tr><tr><td class="c-o">Telepon:</td><td>{{ $settings->get('hotel.phone', '+62 812 3456 7890') }}</td></tr><tr><td class="c-o">Email:</td><td>{{ $settings->get('hotel.email', 'info@candraresort.test') }}</td></tr></tbody></table></div></div><div class="col-lg-7 offset-lg-1"><div class="auth-card"><h4 class="mb-4">Informasi Reservasi</h4><p>Untuk saat ini, pertanyaan dapat disampaikan melalui telepon atau email. Form pesan akan diaktifkan setelah modul website Receptionist tersedia.</p><a href="{{ route('public.rooms.index') }}" class="sona-button d-inline-block">Lihat Kamar</a></div></div></div></div></section>
+@endsection

@@ -1,0 +1,7 @@
+@extends('layouts.guest')
+@section('title', 'Pesanan F&B Saya')
+@section('content')
+<section class="auth-section"><div class="container"><div class="d-flex flex-wrap justify-content-between align-items-center mb-5"><div><p class="text-uppercase mb-1" style="letter-spacing:2px;color:#dfa974;font-weight:700">Room {{ $access->room->room_number }}</p><h2>Pesanan F&B Saya</h2></div><div><a href="{{ route('room-service.food.index') }}" class="sona-button mr-2">Pesan Lagi</a><a href="{{ route('room-service.home') }}" class="btn btn-outline-secondary">Portal</a></div></div>
+    <div class="auth-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Pesanan</th><th>Waktu</th><th>Item</th><th>Status</th><th class="text-right">Total</th></tr></thead><tbody>@forelse($orders as $order)<tr><td><a href="{{ route('room-service.food.show', $order) }}"><strong>{{ $order->order_code }}</strong></a></td><td>{{ $order->ordered_at->translatedFormat('d M Y H:i') }}</td><td>{{ $order->items->sum('quantity') }} item</td><td><span class="badge badge-{{ $order->status->badgeClass() }}">{{ $order->status->label() }}</span></td><td class="text-right">Rp{{ number_format((float)$order->total_amount,0,',','.') }}</td></tr>@empty<tr><td colspan="5" class="text-center text-muted py-5">Belum ada pesanan.</td></tr>@endforelse</tbody></table></div>{{ $orders->links() }}</div>
+</div></section>
+@endsection
