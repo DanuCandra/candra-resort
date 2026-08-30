@@ -18,6 +18,10 @@ class WebsiteSettingsRequest extends FormRequest
             'hotel_phone' => ['required', 'string', 'max:50'],
             'hotel_email' => ['required', 'email', 'max:255'],
             'hotel_address' => ['required', 'string', 'max:1000'],
+            'hotel_tagline' => ['nullable', 'string', 'max:100'],
+            'hotel_whatsapp' => ['nullable', 'string', 'max:50'],
+            'instagram_url' => ['nullable', 'url', 'max:500'],
+            'facebook_url' => ['nullable', 'url', 'max:500'],
             'check_in_time' => ['required', 'date_format:H:i'],
             'check_out_time' => ['required', 'date_format:H:i'],
         ];

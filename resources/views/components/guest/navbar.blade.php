@@ -34,15 +34,15 @@
             <div class="row">
                 <div class="col-lg-6">
                     <ul class="tn-left">
-                        <li><i class="fa fa-phone"></i> +62 812 3456 7890</li>
-                        <li><i class="fa fa-envelope"></i> info@candraresort.test</li>
+                        <li><i class="fa fa-phone"></i> {{ $siteSettings->get('hotel.phone', '+62 812 3456 7890') }}</li>
+                        <li><i class="fa fa-envelope"></i> {{ $siteSettings->get('hotel.email', 'info@candraresort.test') }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-6">
                     <div class="tn-right">
                         <div class="top-social">
-                            <a href="#" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
-                            <a href="#" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+                            @if ($siteSettings->get('social.instagram'))<a href="{{ $siteSettings->get('social.instagram') }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa fa-instagram"></i></a>@endif
+                            @if ($siteSettings->get('social.facebook'))<a href="{{ $siteSettings->get('social.facebook') }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa fa-facebook"></i></a>@endif
                         </div>
                         @auth
                             <a href="{{ route(auth()->user()->dashboardRouteName()) }}" class="bk-btn">Dashboard Saya</a>
@@ -63,7 +63,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="logo">
-                        <a href="{{ route('home') }}" class="brand-text">Candra Resort<span>Hotel & Experience</span></a>
+                        <a href="{{ route('home') }}" class="brand-text">{{ $siteSettings->get('hotel.name', 'Candra Resort') }}<span>{{ $siteSettings->get('hotel.tagline', 'Hotel & Experience') }}</span></a>
                     </div>
                 </div>
                 <div class="col-lg-9">

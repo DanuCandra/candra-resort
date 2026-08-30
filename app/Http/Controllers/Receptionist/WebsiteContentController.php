@@ -10,6 +10,7 @@ use App\Models\GalleryImage;
 use App\Models\HotelSetting;
 use App\Models\WebsiteContent;
 use App\Support\AuditLogger;
+use App\Support\WebsiteContentRegistry;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +21,31 @@ class WebsiteContentController extends Controller
 {
     public function index(Request $request): View
     {
+        $pages = WebsiteContentRegistry::pages();
+        $slots = WebsiteContentRegistry::slots();
+        $selectedPage = array_key_exists((string) $request->query('page'), $pages)
+            ? (string) $request->query('page')
+            : 'home';
+        $selectedSlots = collect($slots)->filter(fn (array $slot): bool => $slot['page'] === $selectedPage);
+        $registeredContents = WebsiteContent::query()
+            ->whereIn('content_key', array_keys($slots))
+            ->get()
+            ->keyBy('content_key');
+        $customContents = WebsiteContent::query()
+            ->whereNotIn('content_key', array_keys($slots))
+            ->whereIn('section', $pages[$selectedPage]['sections'])
+            ->orderBy('section')
+            ->orderBy('sort_order')
+            ->paginate(6, ['*'], 'contents_page')
+            ->withQueryString();
+
         return view('receptionist.website.index', [
             'settings' => HotelSetting::query()->pluck('setting_value', 'setting_key'),
-            'contents' => WebsiteContent::query()->orderBy('section')->orderBy('sort_order')
-                ->paginate(8, ['*'], 'contents_page')->withQueryString(),
+            'pages' => $pages,
+            'selectedPage' => $selectedPage,
+            'selectedSlots' => $selectedSlots,
+            'registeredContents' => $registeredContents,
+            'customContents' => $customContents,
             'galleryImages' => GalleryImage::query()->orderBy('sort_order')->latest()
                 ->paginate(9, ['*'], 'gallery_page')->withQueryString(),
             'metrics' => [
@@ -45,6 +67,10 @@ class WebsiteContentController extends Controller
             'hotel_phone' => ['contact', 'hotel.phone', 'string', 'Nomor telepon utama'],
             'hotel_email' => ['contact', 'hotel.email', 'string', 'Email utama'],
             'hotel_address' => ['contact', 'hotel.address', 'string', 'Alamat hotel'],
+            'hotel_tagline' => ['general', 'hotel.tagline', 'string', 'Tagline singkat hotel'],
+            'hotel_whatsapp' => ['contact', 'hotel.whatsapp', 'string', 'Nomor WhatsApp reservasi'],
+            'instagram_url' => ['social', 'social.instagram', 'string', 'Tautan Instagram'],
+            'facebook_url' => ['social', 'social.facebook', 'string', 'Tautan Facebook'],
             'check_in_time' => ['operation', 'hotel.check_in_time', 'time', 'Waktu check-in standar'],
             'check_out_time' => ['operation', 'hotel.check_out_time', 'time', 'Waktu check-out standar'],
         ];
@@ -69,31 +95,34 @@ class WebsiteContentController extends Controller
 
     public function storeContent(WebsiteContentRequest $request): RedirectResponse
     {
-        $data = $request->safe()->except('image');
+        $data = $request->safe()->except(['image', 'remove_image']);
         if ($request->hasFile('image')) {
             $data['image_path'] = $request->file('image')->store('website-contents', 'public');
         }
         $content = WebsiteContent::query()->create([...$data, 'updated_by' => $request->user()->id]);
         AuditLogger::record($request, 'create', 'website_contents', $content, 'Membuat konten website '.$content->content_key.'.', null, $content->toArray());
 
-        return redirect()->route('receptionist.website.index', ['tab' => 'contents'])->with('success', 'Konten website berhasil ditambahkan.');
+        return $this->contentRedirect($request)->with('success', 'Konten website berhasil ditambahkan.');
     }
 
     public function updateContent(WebsiteContentRequest $request, WebsiteContent $websiteContent): RedirectResponse
     {
         $old = $websiteContent->toArray();
-        $data = $request->safe()->except('image');
+        $data = $request->safe()->except(['image', 'remove_image']);
         if ($request->hasFile('image')) {
             $oldImage = $websiteContent->image_path;
             $data['image_path'] = $request->file('image')->store('website-contents', 'public');
             if ($oldImage) {
                 Storage::disk('public')->delete($oldImage);
             }
+        } elseif ($request->validated('remove_image') && $websiteContent->image_path) {
+            Storage::disk('public')->delete($websiteContent->image_path);
+            $data['image_path'] = null;
         }
         $websiteContent->update([...$data, 'updated_by' => $request->user()->id]);
         AuditLogger::record($request, 'update', 'website_contents', $websiteContent, 'Memperbarui konten website '.$websiteContent->content_key.'.', $old, $websiteContent->fresh()->toArray());
 
-        return redirect()->route('receptionist.website.index', ['tab' => 'contents'])->with('success', 'Konten website berhasil diperbarui.');
+        return $this->contentRedirect($request)->with('success', 'Konten website berhasil diperbarui.');
     }
 
     public function destroyContent(Request $request, WebsiteContent $websiteContent): RedirectResponse
@@ -102,7 +131,7 @@ class WebsiteContentController extends Controller
         $websiteContent->delete();
         AuditLogger::record($request, 'delete', 'website_contents', $websiteContent, 'Menghapus konten website '.$key.'.');
 
-        return redirect()->route('receptionist.website.index', ['tab' => 'contents'])->with('success', 'Konten website berhasil dihapus.');
+        return $this->contentRedirect($request)->with('success', 'Konten website berhasil dihapus.');
     }
 
     public function storeGallery(GalleryImageRequest $request): RedirectResponse
@@ -136,5 +165,19 @@ class WebsiteContentController extends Controller
         AuditLogger::record($request, 'delete', 'gallery_images', $galleryImage, 'Menghapus gambar dari galeri website.');
 
         return redirect()->route('receptionist.website.index', ['tab' => 'gallery'])->with('success', 'Gambar galeri berhasil dihapus.');
+    }
+
+    private function contentRedirect(Request $request): RedirectResponse
+    {
+        if (! $request->filled('return_page')) {
+            return redirect()->route('receptionist.website.index', ['tab' => 'contents']);
+        }
+
+        $page = (string) $request->input('return_page');
+        if (! array_key_exists($page, WebsiteContentRegistry::pages())) {
+            $page = 'home';
+        }
+
+        return redirect()->route('receptionist.website.index', ['tab' => 'contents', 'page' => $page]);
     }
 }

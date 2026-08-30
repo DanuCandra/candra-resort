@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\HotelSetting;
 use App\Models\Promotion;
 use App\Models\RoomType;
+use App\Models\WebsiteContent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -87,5 +89,39 @@ class PublicPagesTest extends TestCase
         $this->get(route('public.about'))->assertOk()->assertSee('about-content-spaced', false);
         $this->get(route('public.promotions.index'))
             ->assertOk()->assertSee('Kode Promo: LIBURAN20')->assertDontSee('EXPIRED20');
+    }
+
+    public function test_registered_website_content_slots_are_rendered_on_their_public_pages(): void
+    {
+        foreach ([
+            ['hero_title', 'hero', 'Judul Hero CMS', null, 'home'],
+            ['about_hero', 'about', 'Tentang dari CMS', 'Deskripsi Tentang CMS', 'public.about'],
+            ['rooms_hero', 'rooms', 'Kamar dari CMS', 'Deskripsi Kamar CMS', 'public.rooms.index'],
+            ['facilities_hero', 'facilities', 'Fasilitas dari CMS', 'Deskripsi Fasilitas CMS', 'public.facilities'],
+            ['promotions_hero', 'promotions', 'Promosi dari CMS', 'Deskripsi Promosi CMS', 'public.promotions.index'],
+            ['gallery_hero', 'gallery', 'Galeri dari CMS', 'Deskripsi Galeri CMS', 'public.gallery'],
+            ['contact_hero', 'contact', 'Kontak dari CMS', 'Deskripsi Kontak CMS', 'public.contact'],
+        ] as [$key, $section, $title, $content, $routeName]) {
+            WebsiteContent::query()->updateOrCreate(
+                ['content_key' => $key],
+                ['section' => $section, 'title' => $title, 'content' => $content, 'sort_order' => 1, 'is_active' => true]
+            );
+
+            $response = $this->get(route($routeName))->assertOk()->assertSee($title);
+            if ($content) {
+                $response->assertSee($content);
+            }
+        }
+
+        WebsiteContent::query()->updateOrCreate(
+            ['content_key' => 'footer_summary'],
+            ['section' => 'footer', 'content' => 'Footer dinamis dari CMS', 'sort_order' => 1, 'is_active' => true]
+        );
+        HotelSetting::query()->updateOrCreate(
+            ['setting_key' => 'hotel.name'],
+            ['setting_group' => 'general', 'setting_value' => 'Nama Resort Dinamis', 'value_type' => 'string']
+        );
+
+        $this->get(route('home'))->assertOk()->assertSee('Footer dinamis dari CMS')->assertSee('Nama Resort Dinamis');
     }
 }

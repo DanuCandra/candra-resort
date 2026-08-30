@@ -3,7 +3,7 @@
 @section('title', 'Candra Resort · Stay, Relax, Experience')
 
 @section('content')
-    <section class="hero-section">
+    <section class="hero-section" id="home-hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -43,23 +43,28 @@
         </div>
         <div class="hero-slider owl-carousel">
             @foreach (['hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg'] as $hero)
-                <div class="hs-item set-bg" data-setbg="{{ asset('landing-lage/img/hero/'.$hero) }}"></div>
+                @php
+                    $heroImage = $loop->first && $contents->get('hero_title')?->image_path
+                        ? Storage::url($contents->get('hero_title')->image_path)
+                        : asset('landing-lage/img/hero/'.$hero);
+                @endphp
+                <div class="hs-item set-bg" data-setbg="{{ $heroImage }}"></div>
             @endforeach
         </div>
     </section>
 
-    <section class="aboutus-section spad">
+    <section class="aboutus-section spad" id="home-about">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="about-text">
-                        <div class="section-title"><span>Tentang Kami</span><h2>Hospitality yang Hangat<br>di Setiap Kunjungan</h2></div>
+                        <div class="section-title"><span>Tentang Kami</span><h2>{{ $contents->get('about_summary')?->title ?? 'Hospitality yang Hangat di Setiap Kunjungan' }}</h2></div>
                         <p class="f-para">{{ $contents->get('about_summary')?->content ?? 'Candra Resort menghadirkan suasana nyaman untuk liburan keluarga, perjalanan bisnis, maupun waktu tenang bersama orang terdekat.' }}</p>
                         <a href="{{ route('public.about') }}" class="primary-btn about-btn">Selengkapnya</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="about-pic"><div class="row"><div class="col-sm-6"><img src="{{ asset('landing-lage/img/about/about-1.jpg') }}" alt="Suasana Candra Resort"></div><div class="col-sm-6"><img src="{{ asset('landing-lage/img/about/about-2.jpg') }}" alt="Kenyamanan Candra Resort"></div></div></div>
+                    <div class="about-pic"><div class="row"><div class="col-sm-6"><img src="{{ $contents->get('about_summary')?->image_path ? Storage::url($contents->get('about_summary')->image_path) : asset('landing-lage/img/about/about-1.jpg') }}" alt="Suasana Candra Resort"></div><div class="col-sm-6"><img src="{{ asset('landing-lage/img/about/about-2.jpg') }}" alt="Kenyamanan Candra Resort"></div></div></div>
                 </div>
             </div>
         </div>
@@ -67,7 +72,7 @@
 
     <section class="services-section spad" id="facilities">
         <div class="container">
-            <div class="row"><div class="col-lg-12"><div class="section-title"><span>Yang Kami Sediakan</span><h2>Fasilitas Candra Resort</h2></div></div></div>
+            <div class="row"><div class="col-lg-12"><div class="section-title"><span>{{ $contents->get('facilities_intro')?->content ?? 'Yang Kami Sediakan' }}</span><h2>{{ $contents->get('facilities_intro')?->title ?? 'Fasilitas Candra Resort' }}</h2></div></div></div>
             <div class="row">
                 @forelse ($facilities as $facility)
                     <div class="col-lg-4 col-sm-6">
@@ -83,6 +88,7 @@
     </section>
 
     <section class="hp-room-section home-room-showcase" id="rooms">
+        <div class="container"><div class="row"><div class="col-lg-12"><div class="section-title"><span>{{ $contents->get('rooms_intro')?->content ?? 'Akomodasi Pilihan' }}</span><h2>{{ $contents->get('rooms_intro')?->title ?? 'Kamar Pilihan Kami' }}</h2></div></div></div></div>
         <div class="container-fluid">
             <div class="hp-room-items"><div class="row">
                 @forelse ($roomTypes as $index => $roomType)
@@ -114,9 +120,9 @@
         </div>
     </section>
 
-    <section class="blog-section spad">
+    <section class="blog-section spad" id="home-promotions">
         <div class="container">
-            <div class="row"><div class="col-lg-12"><div class="section-title"><span>Penawaran Terbaik</span><h2>Promosi Terbaru</h2></div></div></div>
+            <div class="row"><div class="col-lg-12"><div class="section-title"><span>{{ $contents->get('promotions_intro')?->content ?? 'Penawaran Terbaik' }}</span><h2>{{ $contents->get('promotions_intro')?->title ?? 'Promosi Terbaru' }}</h2></div></div></div>
             <div class="row">
                 @forelse ($promotions as $promotion)
                     <div class="col-lg-4"><div class="blog-item set-bg" data-setbg="{{ asset('landing-lage/img/blog/blog-'.(($loop->index % 3) + 1).'.jpg') }}"><div class="bi-text"><span class="b-tag">Kode Promo: {{ $promotion->code }}</span><h4><a href="{{ route('public.promotions.index') }}">{{ $promotion->name }}</a></h4><div class="b-time"><i class="icon_clock_alt"></i> {{ $promotion->ends_at ? 'Berlaku sampai '.$promotion->ends_at->translatedFormat('d M Y') : 'Tanpa batas waktu' }}</div></div></div></div>

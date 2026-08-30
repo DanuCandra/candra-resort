@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\RoomType;
+use App\Models\WebsiteContent;
 use App\Services\AvailabilityService;
 use App\Services\PricingService;
 use Carbon\CarbonImmutable;
@@ -48,7 +49,9 @@ class RoomController extends Controller
             });
         }
 
-        return view('public.rooms.index', compact('roomTypes', 'search'));
+        $content = WebsiteContent::query()->where('content_key', 'rooms_hero')->where('is_active', true)->first();
+
+        return view('public.rooms.index', compact('roomTypes', 'search', 'content'));
     }
 
     public function show(Request $request, RoomType $roomType, AvailabilityService $availability, PricingService $pricing): View

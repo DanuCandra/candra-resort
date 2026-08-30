@@ -22,6 +22,12 @@ class ReceptionistWebsiteContentTest extends TestCase
         $this->actingAs($receptionist)->get(route('receptionist.website.index'))
             ->assertOk()->assertSee('Informasi Hotel')->assertSee('Konten Halaman')->assertSee('Galeri');
 
+        $this->actingAs($receptionist)->get(route('receptionist.website.index', ['tab' => 'contents', 'page' => 'facilities']))
+            ->assertOk()
+            ->assertSee('Pilih Halaman yang Diedit')
+            ->assertSee('Banner Halaman Fasilitas')
+            ->assertSee('Lihat posisi');
+
         $this->actingAs($receptionist)->put(route('receptionist.website.settings.update'), [
             'hotel_name' => 'Candra Resort Test',
             'hotel_phone' => '+62 811 2222 3333',
@@ -56,6 +62,15 @@ class ReceptionistWebsiteContentTest extends TestCase
             'sort_order' => 21, 'is_active' => 1,
         ])->assertRedirect(route('receptionist.website.index', ['tab' => 'contents']));
         $this->assertDatabaseHas('website_contents', ['id' => $content->id, 'title' => 'Judul Diperbarui']);
+
+        $oldImage = $content->image_path;
+        $this->actingAs($receptionist)->put(route('receptionist.website.contents.update', $content), [
+            'section' => 'about', 'content_key' => 'about_test_content',
+            'title' => 'Judul Diperbarui', 'content' => 'Isi diperbarui.',
+            'sort_order' => 21, 'is_active' => 1, 'remove_image' => 1,
+        ])->assertRedirect(route('receptionist.website.index', ['tab' => 'contents']));
+        Storage::disk('public')->assertMissing($oldImage);
+        $this->assertNull($content->fresh()->image_path);
 
         $this->actingAs($receptionist)->post(route('receptionist.website.gallery.store'), [
             'caption' => 'Galeri Test', 'alt_text' => 'Foto galeri test',

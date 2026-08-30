@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 @section('title', 'Kamar · Candra Resort')
 @section('content')
-    <section class="page-hero" style="background-image:url('{{ asset('landing-lage/img/hero/hero-2.jpg') }}')"><div class="container text-center"><h1>Kamar & Suite</h1><p>Temukan ruang terbaik untuk perjalanan Anda.</p></div></section>
+    <section id="page-top" class="page-hero" style="background-image:url('{{ $content?->image_path ? Storage::url($content->image_path) : asset('landing-lage/img/hero/hero-2.jpg') }}')"><div class="container text-center"><h1>{{ $content?->title ?? 'Kamar & Suite' }}</h1><p>{{ $content?->content ?? 'Temukan ruang terbaik untuk perjalanan Anda.' }}</p></div></section>
     <section class="py-5" style="background:#f6f6f6"><div class="container"><div class="auth-card"><form method="GET" action="{{ route('public.rooms.index') }}" class="sona-form"><div class="row align-items-end">
         <div class="col-md-3 mb-3"><label>Check-In</label><input type="date" name="check_in" min="{{ today()->format('Y-m-d') }}" value="{{ old('check_in',request('check_in',today()->addDay()->format('Y-m-d'))) }}" class="form-control @error('check_in') is-invalid @enderror" required>@error('check_in')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
         <div class="col-md-3 mb-3"><label>Check-Out</label><input type="date" name="check_out" min="{{ today()->addDay()->format('Y-m-d') }}" value="{{ old('check_out',request('check_out',today()->addDays(2)->format('Y-m-d'))) }}" class="form-control @error('check_out') is-invalid @enderror" required>@error('check_out')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
