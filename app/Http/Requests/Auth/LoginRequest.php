@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Memvalidasi data dan percobaan login.
 class LoginRequest extends FormRequest
 {
     public function authorize(): bool

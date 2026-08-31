@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['room_type_id', 'image_path', 'alt_text', 'caption', 'is_primary', 'sort_order'])]
+// Mewakili gambar galeri tipe kamar.
 class RoomTypeImage extends Model
 {
     public function roomType(): BelongsTo

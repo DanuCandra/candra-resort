@@ -10,6 +10,7 @@ use App\Models\Promotion;
 use App\Models\WebsiteContent;
 use Illuminate\View\View;
 
+// Menampilkan halaman informasi publik hotel.
 class PageController extends Controller
 {
     public function about(): View

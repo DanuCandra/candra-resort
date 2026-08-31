@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['setting_group', 'setting_key', 'setting_value', 'value_type', 'description', 'updated_by'])]
+// Mewakili pengaturan umum dan kontak hotel.
 class HotelSetting extends Model
 {
     public function updatedBy(): BelongsTo

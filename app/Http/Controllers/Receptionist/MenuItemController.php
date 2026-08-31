@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+// Mengelola menu makanan dan minuman.
 class MenuItemController extends Controller
 {
     public function index(Request $request): View

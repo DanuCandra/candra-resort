@@ -39,6 +39,7 @@ use App\Http\Controllers\RoomService\BillController;
 use App\Http\Controllers\RoomService\FoodOrderController as RoomServiceFoodOrderController;
 use App\Http\Controllers\RoomService\GuestRequestController as RoomServiceGuestRequestController;
 use App\Http\Controllers\RoomService\ServiceOrderController as RoomServiceServiceOrderController;
+use App\Http\Controllers\Staff\ProfileController as StaffProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -97,6 +98,9 @@ Route::prefix('guest')->name('guest.')->middleware(['auth', 'active', 'role:gues
 
 Route::prefix('receptionist')->name('receptionist.')->middleware(['auth', 'active', 'role:receptionist'])->group(function (): void {
     Route::get('/dashboard', ReceptionistDashboardController::class)->name('dashboard');
+    Route::get('/profile', [StaffProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [StaffProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [StaffProfileController::class, 'updatePassword'])->name('profile.password.update');
 
     Route::get('/guests', [ReceptionistGuestController::class, 'index'])->name('guests.index');
     Route::get('/guests/accounts/{guest}', [ReceptionistGuestController::class, 'showAccount'])->name('guests.accounts.show');
@@ -158,6 +162,9 @@ Route::prefix('receptionist')->name('receptionist.')->middleware(['auth', 'activ
 
 Route::prefix('owner')->name('owner.')->middleware(['auth', 'active', 'role:owner'])->group(function (): void {
     Route::get('/dashboard', OwnerDashboardController::class)->name('dashboard');
+    Route::get('/profile', [StaffProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [StaffProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [StaffProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::get('/reports/reservations', [OwnerReportController::class, 'reservations'])->name('reports.reservations');
     Route::get('/reports/occupancy', [OwnerReportController::class, 'occupancy'])->name('reports.occupancy');
     Route::get('/reports/revenue', [OwnerReportController::class, 'revenue'])->name('reports.revenue');

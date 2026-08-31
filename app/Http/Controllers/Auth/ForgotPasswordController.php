@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
+// Menangani permintaan tautan lupa password.
 class ForgotPasswordController extends Controller
 {
     public function create(): View

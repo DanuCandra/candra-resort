@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Memantau dan memperbarui pesanan makanan tamu.
 class FoodOrderController extends Controller
 {
     public function index(Request $request): View

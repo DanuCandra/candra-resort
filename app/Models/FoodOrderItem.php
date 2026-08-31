@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['food_order_id', 'menu_item_id', 'item_name', 'quantity', 'unit_price', 'subtotal', 'special_notes'])]
+// Mewakili rincian menu dalam pesanan makanan.
 class FoodOrderItem extends Model
 {
     public function order(): BelongsTo

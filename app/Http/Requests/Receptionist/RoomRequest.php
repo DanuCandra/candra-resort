@@ -6,6 +6,7 @@ use App\Enums\RoomStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi data kamar fisik.
 class RoomRequest extends FormRequest
 {
     public function authorize(): bool

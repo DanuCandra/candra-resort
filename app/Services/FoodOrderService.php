@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Membuat dan memproses status pesanan makanan.
 class FoodOrderService
 {
     public function __construct(private readonly FolioService $folios) {}

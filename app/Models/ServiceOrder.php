@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'source', 'status', 'quantity', 'unit_price', 'total_amount', 'charge_to_room',
     'scheduled_at', 'notes', 'accepted_at', 'completed_at', 'cancelled_at',
 ])]
+// Mewakili pesanan layanan hotel oleh tamu.
 class ServiceOrder extends Model
 {
     public function stay(): BelongsTo

@@ -8,6 +8,7 @@ use App\Models\ServiceOrder;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
+// Memasukkan biaya dan menghitung ulang folio.
 class FolioService
 {
     public function postFoodOrder(Folio $folio, FoodOrder $order, User $receptionist): void

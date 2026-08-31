@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'midtrans_va_number', 'midtrans_expiry_time', 'midtrans_response', 'paid_at',
     'refunded_at', 'notes',
 ])]
+// Mewakili transaksi pembayaran online atau manual.
 class Payment extends Model
 {
     public function reservation(): BelongsTo

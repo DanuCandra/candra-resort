@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Validation\ValidationException;
 
+// Menghitung tarif per malam dan diskon promosi.
 class PricingService
 {
     public function quote(

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'name', 'code', 'type', 'channel', 'gateway_method_code', 'instructions',
     'is_online', 'is_active', 'sort_order', 'created_by',
 ])]
+// Mewakili metode pembayaran yang tersedia.
 class PaymentMethod extends Model
 {
     use SoftDeletes;

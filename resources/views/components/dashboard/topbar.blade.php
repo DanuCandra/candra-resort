@@ -1,3 +1,8 @@
+@php
+    $currentStaff = auth()->user();
+    $staffAvatarUrl = $currentStaff->avatar_path ? asset('storage/'.$currentStaff->avatar_path) : null;
+@endphp
+
 <header class="topbar">
     <div class="with-vertical">
         <nav class="navbar navbar-expand-lg p-0">
@@ -15,14 +20,25 @@
                     </li>
                     <li class="nav-item dropdown ms-2">
                         <a class="nav-link pe-0" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="round-40 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-semibold">{{ str(auth()->user()->name)->substr(0, 1)->upper() }}</span>
+                            @if ($staffAvatarUrl)
+                                <img src="{{ $staffAvatarUrl }}" width="40" height="40" class="rounded-circle object-fit-cover" alt="Foto profil {{ $currentStaff->name }}">
+                            @else
+                                <span class="round-40 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-semibold">{{ str($currentStaff->name)->substr(0, 1)->upper() }}</span>
+                            @endif
                         </a>
                         <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up">
                             <div class="py-3 px-4 border-bottom">
-                                <h6 class="mb-1 fw-semibold">{{ auth()->user()->name }}</h6>
-                                <span class="fs-2 text-body-secondary">{{ auth()->user()->email }}</span>
+                                <div class="d-flex align-items-center gap-3">
+                                    @if ($staffAvatarUrl)
+                                        <img src="{{ $staffAvatarUrl }}" width="48" height="48" class="rounded-circle object-fit-cover" alt="Foto profil {{ $currentStaff->name }}">
+                                    @else
+                                        <span class="round-48 rounded-circle bg-light-primary text-primary d-flex align-items-center justify-content-center fw-semibold">{{ str($currentStaff->name)->substr(0, 1)->upper() }}</span>
+                                    @endif
+                                    <div class="min-w-0"><h6 class="mb-1 fw-semibold text-truncate">{{ $currentStaff->name }}</h6><span class="fs-2 text-body-secondary d-block text-truncate">{{ $currentStaff->email }}</span><small class="text-primary">{{ $currentStaff->role->label() }}</small></div>
+                                </div>
                             </div>
                             <div class="p-3">
+                                <a href="{{ route($currentStaff->profileRouteName()) }}" class="dropdown-item rounded-1"><i class="ti ti-user-circle me-2"></i>Profil Saya</a>
                                 <a href="{{ route('home') }}" class="dropdown-item rounded-1"><i class="ti ti-world me-2"></i>Lihat Website</a>
                                 <form action="{{ route('logout') }}" method="POST" data-confirm="Keluar dari sistem Candra Resort?" data-confirm-icon="question">
                                     @csrf

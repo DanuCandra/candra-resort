@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan pilihan role pengguna aplikasi.
 enum UserRole: string
 {
     case Guest = 'guest';

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
+// Menerima dan memproses webhook pembayaran Midtrans.
 class MidtransNotificationController extends Controller
 {
     public function __invoke(Request $request, MidtransPaymentService $service): JsonResponse

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['section', 'content_key', 'title', 'content', 'image_path', 'metadata', 'sort_order', 'is_active', 'updated_by'])]
+// Mewakili konten dinamis pada website publik.
 class WebsiteContent extends Model
 {
     use SoftDeletes;

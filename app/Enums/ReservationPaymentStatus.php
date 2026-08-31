@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan status pembayaran keseluruhan reservasi.
 enum ReservationPaymentStatus: string
 {
     case Unpaid = 'unpaid';

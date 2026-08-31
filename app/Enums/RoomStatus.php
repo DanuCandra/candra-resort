@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan pilihan status operasional kamar.
 enum RoomStatus: string
 {
     case Available = 'available';

@@ -14,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
+// Menampilkan direktori dan riwayat kunjungan tamu.
 class GuestController extends Controller
 {
     public function index(Request $request): View

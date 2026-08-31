@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menangani permintaan bantuan dari portal kamar.
 class GuestRequestController extends Controller
 {
     public function index(Request $request): View

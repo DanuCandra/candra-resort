@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+// Menangani pendaftaran akun Guest.
 class RegisterController extends Controller
 {
     public function create(): View

@@ -1,5 +1,54 @@
 @extends('layouts.guest')
-@section('title','Reservasi Saya · Candra Resort')
+@section('title', 'Reservasi Saya · Candra Resort')
 @section('content')
-    <section class="page-hero" style="background-image:url('{{ asset('landing-lage/img/hero/hero-2.jpg') }}')"><div class="container"><h1>Reservasi Saya</h1><p>Riwayat perjalanan dan status pembayaran Anda.</p></div></section><section class="spad" style="background:#f8f8f8"><div class="container"><div class="d-flex justify-content-between align-items-center mb-4"><h3>Semua Reservasi</h3><a href="{{ route('public.rooms.index') }}" class="sona-button">Pesan Kamar</a></div><div class="auth-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Kode</th><th>Kamar</th><th>Tanggal</th><th>Status</th><th>Total</th><th></th></tr></thead><tbody>@forelse($reservations as $reservation)<tr><td><strong>{{ $reservation->booking_code }}</strong><small class="d-block text-muted">{{ $reservation->created_at->translatedFormat('d M Y H:i') }}</small></td><td>{{ $reservation->roomType->name }}</td><td>{{ $reservation->check_in_date->format('d M Y') }} – {{ $reservation->check_out_date->format('d M Y') }}</td><td><span class="badge badge-light-primary">{{ str($reservation->status->value)->replace('_',' ')->title() }}</span><small class="d-block text-muted">{{ str($reservation->payment_status->value)->title() }}</small></td><td>Rp{{ number_format((float)$reservation->grand_total,0,',','.') }}</td><td><a href="{{ route('guest.reservations.show',$reservation) }}" class="btn btn-sm btn-outline-secondary">Detail</a></td></tr>@empty<tr><td colspan="6" class="text-center py-5">Belum ada reservasi.</td></tr>@endforelse</tbody></table></div>{{ $reservations->links() }}</div></div></section>
+    <section class="page-hero" style="background-image:url('{{ asset('landing-lage/img/hero/hero-2.jpg') }}')">
+        <div class="container">
+            <h1>Reservasi Saya</h1>
+            <p>Riwayat perjalanan dan status pembayaran Anda.</p>
+        </div>
+    </section>
+    <section class="spad" style="background:#f8f8f8">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Semua Reservasi</h3><a href="{{ route('public.rooms.index') }}" class="sona-button">Pesan Kamar</a>
+            </div>
+            <div class="auth-card">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Kamar</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($reservations as $reservation)
+                                <tr>
+                                    <td><strong>{{ $reservation->booking_code }}</strong><small
+                                            class="d-block text-muted">{{ $reservation->created_at->translatedFormat('d M Y H:i') }}</small>
+                                    </td>
+                                    <td>{{ $reservation->roomType->name }}</td>
+                                    <td>{{ $reservation->check_in_date->format('d M Y') }} –
+                                        {{ $reservation->check_out_date->format('d M Y') }}</td>
+                                    <td><span
+                                            class="badge badge-light-primary">{{ str($reservation->status->value)->replace('_', ' ')->title() }}</span><small
+                                            class="d-block text-muted">{{ str($reservation->payment_status->value)->title() }}</small>
+                                    </td>
+                                    <td>Rp{{ number_format((float) $reservation->grand_total, 0, ',', '.') }}</td>
+                                    <td><a href="{{ route('guest.reservations.show', $reservation) }}"
+                                            class="btn btn-sm btn-outline-secondary">Detail</a></td>
+                            </tr>@empty<tr>
+                                    <td colspan="6" class="text-center py-5">Belum ada reservasi.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>{{ $reservations->links() }}
+            </div>
+        </div>
+    </section>
 @endsection

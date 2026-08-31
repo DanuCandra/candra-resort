@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 #[Fillable(['room_type_id', 'room_number', 'floor', 'status', 'qr_token', 'notes', 'is_active'])]
+// Mewakili unit kamar fisik hotel.
 class Room extends Model
 {
     use SoftDeletes;

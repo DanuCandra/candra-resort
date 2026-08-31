@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Mengelola tarif kamar berdasarkan periode dan hari.
 class RoomRateController extends Controller
 {
     public function index(Request $request): View

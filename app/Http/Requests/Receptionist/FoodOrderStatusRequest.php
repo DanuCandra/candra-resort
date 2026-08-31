@@ -6,6 +6,7 @@ use App\Enums\FoodOrderStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi perubahan status pesanan makanan.
 class FoodOrderStatusRequest extends FormRequest
 {
     public function authorize(): bool

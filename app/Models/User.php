@@ -30,6 +30,7 @@ use Illuminate\Notifications\Notifiable;
     'created_by',
 ])]
 #[Hidden(['password', 'remember_token'])]
+// Mewakili akun Guest, Receptionist, dan Owner.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -70,6 +71,15 @@ class User extends Authenticatable
         return match ($this->role) {
             UserRole::Owner => 'owner.dashboard',
             UserRole::Receptionist => 'receptionist.dashboard',
+            default => 'guest.dashboard',
+        };
+    }
+
+    public function profileRouteName(): string
+    {
+        return match ($this->role) {
+            UserRole::Owner => 'owner.profile.edit',
+            UserRole::Receptionist => 'receptionist.profile.edit',
             default => 'guest.dashboard',
         };
     }

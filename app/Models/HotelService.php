@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'code', 'name', 'category', 'description', 'price', 'price_unit', 'duration_minutes',
     'image_path', 'requires_schedule', 'is_available', 'is_active', 'sort_order',
 ])]
+// Mewakili layanan berbayar yang disediakan hotel.
 class HotelService extends Model
 {
     use SoftDeletes;

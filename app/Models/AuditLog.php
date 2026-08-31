@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
     'user_id', 'event', 'module', 'auditable_type', 'auditable_id', 'description',
     'old_values', 'new_values', 'ip_address', 'user_agent', 'created_at',
 ])]
+// Mewakili riwayat aktivitas penting pengguna.
 class AuditLog extends Model
 {
     public const UPDATED_AT = null;

@@ -4,6 +4,7 @@ namespace App\Http\Requests\RoomService;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Memvalidasi pemesanan layanan hotel.
 class ServiceOrderRequest extends FormRequest
 {
     public function authorize(): bool

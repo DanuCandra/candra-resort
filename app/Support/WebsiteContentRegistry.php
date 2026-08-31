@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+// Mendefinisikan halaman dan slot konten website.
 final class WebsiteContentRegistry
 {
     /** @return array<string, array{label: string, description: string, route: string, icon: string, sections: array<int, string>}> */

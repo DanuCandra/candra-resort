@@ -27,6 +27,9 @@ class OperationalFinanceTest extends TestCase
             ->get(route('room-service.bill.show'))
             ->assertOk()
             ->assertSee('Tagihan Berjalan')
+            ->assertSee('id="folio-dashboard"', false)
+            ->assertSee('Rincian Tagihan')
+            ->assertSee('Saldo Berjalan')
             ->assertSee($folio->folio_number)
             ->assertSee('Rp500.000');
     }

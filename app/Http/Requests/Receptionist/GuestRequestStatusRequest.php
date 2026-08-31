@@ -6,6 +6,7 @@ use App\Enums\GuestRequestStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi perubahan status permintaan tamu.
 class GuestRequestStatusRequest extends FormRequest
 {
     public function rules(): array

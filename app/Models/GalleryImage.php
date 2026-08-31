@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['image_path', 'caption', 'alt_text', 'sort_order', 'is_active', 'updated_by'])]
+// Mewakili gambar pada galeri website.
 class GalleryImage extends Model
 {
     use SoftDeletes;

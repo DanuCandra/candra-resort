@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     'check_out_at', 'key_code', 'key_issued_at', 'key_returned_at', 'security_deposit_amount',
     'status', 'notes',
 ])]
+// Mewakili masa inap aktual setelah check-in.
 class Stay extends Model
 {
     public function reservation(): BelongsTo

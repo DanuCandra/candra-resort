@@ -4,6 +4,7 @@ namespace App\Http\Requests\Receptionist;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Memvalidasi pengaturan informasi hotel.
 class WebsiteSettingsRequest extends FormRequest
 {
     public function authorize(): bool

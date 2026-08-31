@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'subtotal', 'service_charge_amount', 'total_amount', 'charge_to_room', 'delivery_notes',
     'ordered_at', 'accepted_at', 'processing_at', 'completed_at', 'cancelled_at',
 ])]
+// Mewakili satu transaksi pesanan makanan.
 class FoodOrder extends Model
 {
     public function stay(): BelongsTo

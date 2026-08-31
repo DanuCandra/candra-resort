@@ -41,7 +41,7 @@
     ] as [$pattern, $routeName, $label, $icon])
         <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs($pattern) ? 'active' : '' }}" href="{{ route($routeName) }}"><span><i class="ti {{ $icon }}"></i></span><span class="hide-menu">{{ $label }}</span></a></li>
     @endforeach
-    <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('receptionist.hotel-services.*') ? 'active' : '' }}" href="{{ route('receptionist.hotel-services.index') }}"><span><i class="ti ti-spa"></i></span><span class="hide-menu">Layanan Hotel</span></a></li>
+    <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('receptionist.hotel-services.*') ? 'active' : '' }}" href="{{ route('receptionist.hotel-services.index') }}"><span><i class="ti ti-massage"></i></span><span class="hide-menu">Layanan Hotel</span></a></li>
 
     <li class="nav-small-cap"><i class="ti ti-dots nav-small-cap-icon fs-4"></i><span class="hide-menu">Keuangan & Website</span></li>
     <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('receptionist.payments.*') ? 'active' : '' }}" href="{{ route('receptionist.payments.index') }}"><span><i class="ti ti-credit-card"></i></span><span class="hide-menu">Pembayaran</span></a></li>

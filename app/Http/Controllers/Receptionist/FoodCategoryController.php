@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Mengelola kategori makanan dan minuman.
 class FoodCategoryController extends Controller
 {
     public function index(Request $request): View

@@ -31,6 +31,23 @@ class PublicPagesTest extends TestCase
         }
     }
 
+    public function test_public_navigation_marks_the_current_page_as_active(): void
+    {
+        foreach ([
+            'public.facilities' => 'Fasilitas',
+            'public.promotions.index' => 'Promosi',
+            'public.gallery' => 'Galeri',
+            'public.about' => 'Tentang',
+            'public.contact' => 'Kontak',
+        ] as $routeName => $label) {
+            $url = route($routeName);
+
+            $this->get($url)
+                ->assertOk()
+                ->assertSee('<li class="active"><a href="'.$url.'">'.$label.'</a></li>', false);
+        }
+    }
+
     public function test_home_availability_form_uses_backend_compatible_dates(): void
     {
         $this->get(route('home'))

@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan pilihan status resmi untuk permintaan tamu.
 enum GuestRequestStatus: string
 {
     case Requested = 'requested';

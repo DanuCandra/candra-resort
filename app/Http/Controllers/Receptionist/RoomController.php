@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
+// Mengelola kamar fisik, status, dan QR kamar.
 class RoomController extends Controller
 {
     public function index(Request $request): View

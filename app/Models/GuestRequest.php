@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'description', 'priority', 'status', 'requested_at', 'accepted_at', 'processing_at',
     'completed_at', 'cancelled_at',
 ])]
+// Mewakili permintaan bantuan atau kebutuhan tamu.
 class GuestRequest extends Model
 {
     public function stay(): BelongsTo

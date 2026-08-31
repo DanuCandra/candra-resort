@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan pilihan status resmi untuk pesanan makanan.
 enum FoodOrderStatus: string
 {
     case Requested = 'requested';

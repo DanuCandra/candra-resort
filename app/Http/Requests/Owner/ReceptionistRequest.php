@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
+// Memvalidasi data akun Receptionist.
 class ReceptionistRequest extends FormRequest
 {
     public function authorize(): bool

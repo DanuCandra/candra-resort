@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'stay_id', 'room_id', 'session_token', 'phone_verified_at', 'last_accessed_at',
     'expires_at', 'revoked_at', 'ip_address', 'user_agent',
 ])]
+// Mewakili sesi akses portal QR kamar.
 class GuestRoomAccess extends Model
 {
     public function stay(): BelongsTo

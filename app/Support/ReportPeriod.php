@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
+// Menyusun dan memvalidasi periode laporan.
 final readonly class ReportPeriod
 {
     public function __construct(

@@ -6,6 +6,7 @@ use App\Support\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi reservasi tamu walk-in.
 class WalkInReservationRequest extends FormRequest
 {
     public function authorize(): bool

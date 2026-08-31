@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+// Menyeragamkan format nomor telepon.
 class PhoneNumber
 {
     public static function normalize(?string $phone): ?string

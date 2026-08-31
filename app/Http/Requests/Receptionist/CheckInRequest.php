@@ -6,6 +6,7 @@ use App\Support\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi data dan konfirmasi check-in.
 class CheckInRequest extends FormRequest
 {
     public function authorize(): bool

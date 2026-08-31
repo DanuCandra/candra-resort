@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
+// Mengelola kode dan aturan promosi.
 class PromotionController extends Controller
 {
     public function index(Request $request): View

@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\View\View;
 
+// Menangani penggantian password melalui token reset.
 class ResetPasswordController extends Controller
 {
     public function create(Request $request, string $token): View

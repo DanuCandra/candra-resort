@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+// Menangani halaman login, autentikasi, dan logout.
 class LoginController extends Controller
 {
     public function create(): View

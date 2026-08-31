@@ -18,6 +18,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
+// Menghitung metrik dan laporan bisnis Owner.
 class OwnerReportService
 {
     /** @return array<string, int|float> */

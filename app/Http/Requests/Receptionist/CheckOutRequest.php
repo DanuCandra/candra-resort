@@ -5,6 +5,7 @@ namespace App\Http\Requests\Receptionist;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi pembayaran dan konfirmasi check-out.
 class CheckOutRequest extends FormRequest
 {
     public function authorize(): bool

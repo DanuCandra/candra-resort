@@ -1,8 +1,27 @@
 @extends('layouts.main')
 @section('title', $order->order_code)
+
+@push('styles')
+    <style>
+        .food-order-delivery-note {
+            border-color: #d8e2ef !important;
+            background-color: #eef3f8 !important;
+            color: #43516a !important;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+            white-space: normal;
+        }
+
+        .food-order-delivery-note strong {
+            color: #17233c !important;
+            font-weight: 700;
+        }
+    </style>
+@endpush
+
 @section('content')
     <x-dashboard.page-heading :title="$order->order_code" :description="$order->stay->guest_name.' · Kamar '.$order->room->room_number" :back="route('receptionist.food-orders.index')" />
-    <div class="row"><div class="col-lg-8"><div class="card"><div class="card-body"><h5 class="fw-semibold mb-4">Rincian Pesanan</h5><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Menu</th><th>Catatan</th><th>Qty</th><th>Harga</th><th class="text-end">Subtotal</th></tr></thead><tbody>@foreach($order->items as $item)<tr><td><strong>{{ $item->item_name }}</strong></td><td>{{ $item->special_notes ?: '-' }}</td><td>{{ $item->quantity }}</td><td>Rp{{ number_format((float)$item->unit_price,0,',','.') }}</td><td class="text-end">Rp{{ number_format((float)$item->subtotal,0,',','.') }}</td></tr>@endforeach</tbody></table></div>@if($order->delivery_notes)<div class="alert alert-light border mt-3"><strong>Catatan pengantaran:</strong> {{ $order->delivery_notes }}</div>@endif</div></div></div>
+    <div class="row"><div class="col-lg-8"><div class="card"><div class="card-body"><h5 class="fw-semibold mb-4">Rincian Pesanan</h5><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Menu</th><th>Catatan</th><th>Qty</th><th>Harga</th><th class="text-end">Subtotal</th></tr></thead><tbody>@foreach($order->items as $item)<tr><td><strong>{{ $item->item_name }}</strong></td><td>{{ $item->special_notes ?: '-' }}</td><td>{{ $item->quantity }}</td><td>Rp{{ number_format((float)$item->unit_price,0,',','.') }}</td><td class="text-end">Rp{{ number_format((float)$item->subtotal,0,',','.') }}</td></tr>@endforeach</tbody></table></div>@if($order->delivery_notes)<div class="alert border mt-3 food-order-delivery-note"><strong>Catatan pengantaran:</strong> {{ $order->delivery_notes }}</div>@endif</div></div></div>
     <div class="col-lg-4"><div class="card"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><span>Status</span><span class="badge bg-light-{{ $order->status->badgeClass() }} text-{{ $order->status->badgeClass() }}">{{ $order->status->label() }}</span></div><hr><div class="d-flex justify-content-between"><span>Dipesan</span><span>{{ $order->ordered_at->format('d M H:i') }}</span></div><div class="d-flex justify-content-between mt-2"><span>Total</span><strong>Rp{{ number_format((float)$order->total_amount,0,',','.') }}</strong></div>@if($order->handledBy)<div class="d-flex justify-content-between mt-2"><span>Ditangani</span><span>{{ $order->handledBy->name }}</span></div>@endif</div></div>
         @php($actions = match($order->status) { \App\Enums\FoodOrderStatus::Requested => [[\App\Enums\FoodOrderStatus::Accepted,'Terima Pesanan','primary'],[\App\Enums\FoodOrderStatus::Cancelled,'Batalkan','danger']], \App\Enums\FoodOrderStatus::Accepted => [[\App\Enums\FoodOrderStatus::Processing,'Mulai Proses','primary'],[\App\Enums\FoodOrderStatus::Cancelled,'Batalkan','danger']], \App\Enums\FoodOrderStatus::Processing => [[\App\Enums\FoodOrderStatus::Completed,'Selesaikan & Tagihkan','success'],[\App\Enums\FoodOrderStatus::Cancelled,'Batalkan','danger']], default => [] })
         @if($actions)<div class="card"><div class="card-body"><h5 class="fw-semibold mb-3">Tindakan</h5>@foreach($actions as [$status,$label,$color])<form method="POST" action="{{ route('receptionist.food-orders.status', $order) }}" class="mb-2" data-confirm="{{ $status === \App\Enums\FoodOrderStatus::Completed ? 'Pesanan akan masuk ke folio tamu dan tidak dapat diubah lagi.' : 'Status pesanan akan diperbarui.' }}" data-confirm-title="{{ $label }}?">@csrf<input type="hidden" name="status" value="{{ $status->value }}"><button class="btn btn-{{ $color }} w-100">{{ $label }}</button></form>@endforeach</div></div>@endif

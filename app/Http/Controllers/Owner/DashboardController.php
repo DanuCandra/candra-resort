@@ -11,6 +11,7 @@ use App\Support\ReportPeriod;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menampilkan ringkasan bisnis pada dashboard Owner.
 class DashboardController extends Controller
 {
     public function __construct(private readonly OwnerReportService $reports) {}

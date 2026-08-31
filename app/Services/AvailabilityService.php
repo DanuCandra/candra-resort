@@ -9,6 +9,7 @@ use App\Models\Room;
 use App\Models\RoomType;
 use Carbon\CarbonInterface;
 
+// Menghitung ketersediaan dan mencegah bentrok kamar.
 class AvailabilityService
 {
     public function availableCount(RoomType $roomType, CarbonInterface $checkIn, CarbonInterface $checkOut): int

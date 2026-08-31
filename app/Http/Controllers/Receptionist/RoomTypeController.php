@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+// Mengelola tipe kamar, fasilitas, dan galeri fotonya.
 class RoomTypeController extends Controller
 {
     public function index(Request $request): View

@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan status masa inap tamu.
 enum StayStatus: string
 {
     case Active = 'active';

@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menampilkan kamar publik beserta harga dan ketersediaannya.
 class RoomController extends Controller
 {
     public function index(Request $request, AvailabilityService $availability, PricingService $pricing): View

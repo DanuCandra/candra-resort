@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['name', 'slug', 'scope', 'icon', 'description', 'is_active', 'sort_order'])]
+// Mewakili fasilitas hotel atau kamar.
 class Facility extends Model
 {
     use SoftDeletes;

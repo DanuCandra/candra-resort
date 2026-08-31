@@ -6,6 +6,7 @@ use App\Enums\ServiceOrderStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi status dan jadwal layanan.
 class ServiceOrderStatusRequest extends FormRequest
 {
     public function rules(): array

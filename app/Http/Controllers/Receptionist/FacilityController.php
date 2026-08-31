@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Mengelola data fasilitas hotel dan kamar.
 class FacilityController extends Controller
 {
     public function index(Request $request): View

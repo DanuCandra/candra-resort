@@ -35,6 +35,24 @@ class OperationalGuestServicesTest extends TestCase
         ]);
     }
 
+    public function test_room_guest_sees_modern_service_catalog_and_same_page_booking_panel(): void
+    {
+        [, $token] = $this->activeAccess();
+        $service = $this->hotelService(true, 200000);
+
+        $this->withSession(['room_service_access_token' => $token])
+            ->get(route('room-service.services.index'))
+            ->assertOk()
+            ->assertSee($service->name)
+            ->assertSee('data-service-card', false)
+            ->assertSee('data-select-service="'.$service->id.'"', false)
+            ->assertSee('id="service-booking-panel"', false)
+            ->assertSee('id="service-quantity-minus"', false)
+            ->assertSee('id="service-quantity-plus"', false)
+            ->assertSee('name="scheduled_at"', false)
+            ->assertSee('Perkiraan total');
+    }
+
     public function test_room_guest_can_order_scheduled_service_with_price_snapshot(): void
     {
         [$access, $token] = $this->activeAccess();
@@ -51,6 +69,37 @@ class OperationalGuestServicesTest extends TestCase
         $this->assertSame(400000.0, (float) $order->total_amount);
         $this->assertSame(200000.0, (float) $order->unit_price);
         $this->assertSame('Dua orang', $order->notes);
+
+        $receptionist = User::factory()->receptionist()->create();
+        $this->actingAs($receptionist)
+            ->get(route('receptionist.dashboard'))
+            ->assertOk()
+            ->assertSee($service->name)
+            ->assertSee($order->order_code);
+    }
+
+    public function test_room_guest_can_monitor_service_orders_with_schedule_and_progress(): void
+    {
+        [, $token] = $this->activeAccess();
+        $service = $this->hotelService(true, 200000);
+        $schedule = now()->addDay()->startOfHour();
+
+        $this->withSession(['room_service_access_token' => $token])->post(route('room-service.services.store'), [
+            'hotel_service_id' => $service->id,
+            'quantity' => 1,
+            'scheduled_at' => $schedule->format('Y-m-d H:i:s'),
+        ]);
+
+        $order = ServiceOrder::latest('id')->firstOrFail();
+
+        $this->withSession(['room_service_access_token' => $token])
+            ->get(route('room-service.services.orders', ['status' => 'requested']))
+            ->assertOk()
+            ->assertSee('id="service-tracking-page"', false)
+            ->assertSee('Ringkasan Pesanan')
+            ->assertSee('class="order-progress"', false)
+            ->assertSee($order->order_code)
+            ->assertSee($schedule->translatedFormat('d M Y, H:i'));
     }
 
     public function test_completed_service_is_added_once_to_folio(): void
@@ -73,6 +122,22 @@ class OperationalGuestServicesTest extends TestCase
         $this->assertDatabaseHas('folio_items', ['folio_id' => $folio->id, 'item_type' => 'service', 'source_id' => $order->id, 'amount' => 125000]);
         $this->assertSame(625000.0, (float) $folio->fresh()->balance_amount);
         $this->assertSame(1, $folio->items()->where('source_type', $order->getMorphClass())->where('source_id', $order->id)->count());
+    }
+
+    public function test_room_guest_sees_quick_request_options_and_same_page_form(): void
+    {
+        [, $token] = $this->activeAccess();
+
+        $this->withSession(['room_service_access_token' => $token])
+            ->get(route('room-service.requests.index'))
+            ->assertOk()
+            ->assertSee('Pembersihan Kamar')
+            ->assertSee('Handuk Bersih')
+            ->assertSee('Bantuan Receptionist')
+            ->assertSee('data-request-option', false)
+            ->assertSee('id="request-form-panel"', false)
+            ->assertSee('name="priority"', false)
+            ->assertSee('Riwayat Permintaan');
     }
 
     public function test_guest_request_follows_operational_status_flow(): void

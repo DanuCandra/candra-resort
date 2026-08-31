@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menampilkan tagihan berjalan kepada tamu.
 class BillController extends Controller
 {
     public function __invoke(Request $request): View
@@ -13,6 +14,12 @@ class BillController extends Controller
         $access = $request->attributes->get('roomServiceAccess');
         $access->load(['room', 'stay.folio']);
         $folio = $access->stay->folio;
+        $categoryTotals = $folio?->items()
+            ->where('is_void', false)
+            ->reorder()
+            ->selectRaw('item_type, SUM(amount) as total')
+            ->groupBy('item_type')
+            ->pluck('total', 'item_type') ?? collect();
         $items = $folio?->items()
             ->where('is_void', false)
             ->latest('posted_at')
@@ -27,6 +34,7 @@ class BillController extends Controller
         return view('room-service.bill.show', [
             'access' => $access,
             'folio' => $folio,
+            'categoryTotals' => $categoryTotals,
             'items' => $items,
             'payments' => $payments,
         ]);

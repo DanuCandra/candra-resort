@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+// Membatasi akses halaman berdasarkan role pengguna.
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string ...$roles): Response

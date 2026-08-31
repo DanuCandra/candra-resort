@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Mengelola metode pembayaran hotel.
 class PaymentMethodController extends Controller
 {
     public function index(Request $request): View

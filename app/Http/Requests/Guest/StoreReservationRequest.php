@@ -5,6 +5,7 @@ namespace App\Http\Requests\Guest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi data reservasi online Guest.
 class StoreReservationRequest extends FormRequest
 {
     public function authorize(): bool

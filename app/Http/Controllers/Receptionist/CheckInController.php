@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+// Menangani antrean dan proses check-in tamu.
 class CheckInController extends Controller
 {
     public function index(): View

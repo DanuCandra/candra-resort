@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     'deposit_amount', 'grand_total', 'promo_code_snapshot', 'special_requests', 'internal_notes',
     'payment_due_at', 'confirmed_at', 'cancelled_at', 'cancelled_by', 'cancellation_reason',
 ])]
+// Mewakili pemesanan kamar oleh tamu.
 class Reservation extends Model
 {
     public function guest(): BelongsTo

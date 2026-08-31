@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
+// Menjalankan seluruh aturan bisnis check-out.
 class CheckOutService
 {
     public function __construct(private readonly ManualPaymentService $payments) {}

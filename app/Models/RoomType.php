@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'bed_type', 'bed_count', 'room_size_sqm', 'base_price', 'extra_bed_price',
     'breakfast_included', 'is_active', 'sort_order',
 ])]
+// Mewakili jenis kamar beserta fasilitasnya.
 class RoomType extends Model
 {
     use SoftDeletes;

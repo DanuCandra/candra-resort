@@ -10,6 +10,7 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Str;
 
+// Membuat URL dan gambar QR kamar.
 class RoomQrService
 {
     public function accessUrl(Room $room): string

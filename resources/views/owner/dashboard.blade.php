@@ -95,7 +95,7 @@
                             <small class="d-block text-white opacity-50 mt-1">Dibandingkan {{ $previousPeriod->label() }}</small>
                         </div>
                         <div class="d-flex flex-wrap gap-2 hero-actions">
-                            <a href="{{ route('owner.receptionists.index') }}" class="hero-button"><i class="ti ti-user-cog"></i>Kelola Receptionist</a>
+                            <a href="{{ route('owner.receptionists.index') }}" class="hero-button"><i class="ti ti-users"></i>Kelola Receptionist</a>
                             <a href="{{ route('owner.reports.monthly', ['period' => 'this_year']) }}" class="hero-button hero-button-primary"><i class="ti ti-report-analytics"></i>Laporan Bulanan</a>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
             @foreach ([
                 ['Room-night Terisi', number_format($metrics['occupied_room_nights']), 'ti-bed'],
                 ['Rata-rata Menginap', $metrics['average_stay'].' malam', 'ti-moon'],
-                ['Pembatalan', number_format($metrics['cancelled']), 'ti-calendar-x'],
+                ['Pembatalan', number_format($metrics['cancelled']), 'ti-calendar-off'],
                 ['Kamar Aktif', number_format($metrics['active_rooms']), 'ti-door'],
             ] as [$label, $value, $icon])
                 <div class="col-xl-3 col-md-6"><div class="mini-stat"><span class="mini-stat-icon"><i class="ti {{ $icon }} fs-6"></i></span><div><small class="text-muted d-block">{{ $label }}</small><h5 class="fw-semibold mb-0">{{ $value }}</h5></div></div></div>

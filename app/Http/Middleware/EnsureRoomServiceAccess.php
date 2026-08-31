@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+// Memastikan sesi portal layanan kamar masih sah.
 class EnsureRoomServiceAccess
 {
     public function handle(Request $request, Closure $next): Response|RedirectResponse

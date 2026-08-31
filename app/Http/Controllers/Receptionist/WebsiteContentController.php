@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+// Mengelola pengaturan, konten, dan galeri website.
 class WebsiteContentController extends Controller
 {
     public function index(Request $request): View

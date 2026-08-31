@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
+// Mengelola akun Receptionist oleh Owner.
 class ReceptionistController extends Controller
 {
     public function index(Request $request): View

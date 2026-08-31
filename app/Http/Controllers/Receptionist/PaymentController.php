@@ -9,6 +9,7 @@ use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menampilkan daftar dan detail pembayaran.
 class PaymentController extends Controller
 {
     public function index(Request $request): View

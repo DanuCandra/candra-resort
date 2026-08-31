@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Membuat dan memproses pesanan layanan hotel.
 class ServiceOrderService
 {
     public function __construct(private readonly FolioService $folios) {}

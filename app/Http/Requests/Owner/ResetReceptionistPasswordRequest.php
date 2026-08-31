@@ -5,6 +5,7 @@ namespace App\Http\Requests\Owner;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
+// Memvalidasi password baru Receptionist.
 class ResetReceptionistPasswordRequest extends FormRequest
 {
     public function authorize(): bool

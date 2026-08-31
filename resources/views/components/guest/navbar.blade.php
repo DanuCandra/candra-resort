@@ -18,11 +18,11 @@
             <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Beranda</a></li>
             <li class="{{ request()->routeIs('public.rooms.*') ? 'active' : '' }}"><a href="{{ route('public.rooms.index') }}">Kamar</a></li>
             @auth @if(auth()->user()->hasRole('guest'))<li class="{{ request()->routeIs('guest.reservations.*') ? 'active' : '' }}"><a href="{{ route('guest.reservations.index') }}">Reservasi Saya</a></li>@endif @endauth
-            <li><a href="{{ route('public.facilities') }}">Fasilitas</a></li>
-            <li><a href="{{ route('public.promotions.index') }}">Promosi</a></li>
-            <li><a href="{{ route('public.gallery') }}">Galeri</a></li>
-            <li><a href="{{ route('public.about') }}">Tentang</a></li>
-            <li><a href="{{ route('public.contact') }}">Kontak</a></li>
+            <li class="{{ request()->routeIs('public.facilities') ? 'active' : '' }}"><a href="{{ route('public.facilities') }}">Fasilitas</a></li>
+            <li class="{{ request()->routeIs('public.promotions.*') ? 'active' : '' }}"><a href="{{ route('public.promotions.index') }}">Promosi</a></li>
+            <li class="{{ request()->routeIs('public.gallery') ? 'active' : '' }}"><a href="{{ route('public.gallery') }}">Galeri</a></li>
+            <li class="{{ request()->routeIs('public.about') ? 'active' : '' }}"><a href="{{ route('public.about') }}">Tentang</a></li>
+            <li class="{{ request()->routeIs('public.contact') ? 'active' : '' }}"><a href="{{ route('public.contact') }}">Kontak</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -73,11 +73,11 @@
                                 <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Beranda</a></li>
                                 <li class="{{ request()->routeIs('public.rooms.*') ? 'active' : '' }}"><a href="{{ route('public.rooms.index') }}">Kamar</a></li>
                                 @auth @if(auth()->user()->hasRole('guest'))<li class="{{ request()->routeIs('guest.reservations.*') ? 'active' : '' }}"><a href="{{ route('guest.reservations.index') }}">Reservasi Saya</a></li>@endif @endauth
-                                <li><a href="{{ route('public.facilities') }}">Fasilitas</a></li>
-                                <li><a href="{{ route('public.promotions.index') }}">Promosi</a></li>
-                                <li><a href="{{ route('public.gallery') }}">Galeri</a></li>
-                                <li><a href="{{ route('public.about') }}">Tentang</a></li>
-                                <li><a href="{{ route('public.contact') }}">Kontak</a></li>
+                                <li class="{{ request()->routeIs('public.facilities') ? 'active' : '' }}"><a href="{{ route('public.facilities') }}">Fasilitas</a></li>
+                                <li class="{{ request()->routeIs('public.promotions.*') ? 'active' : '' }}"><a href="{{ route('public.promotions.index') }}">Promosi</a></li>
+                                <li class="{{ request()->routeIs('public.gallery') ? 'active' : '' }}"><a href="{{ route('public.gallery') }}">Galeri</a></li>
+                                <li class="{{ request()->routeIs('public.about') ? 'active' : '' }}"><a href="{{ route('public.about') }}">Tentang</a></li>
+                                <li class="{{ request()->routeIs('public.contact') ? 'active' : '' }}"><a href="{{ route('public.contact') }}">Kontak</a></li>
                             </ul>
                         </nav>
                     </div>

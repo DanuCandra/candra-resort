@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'source_type', 'source_id', 'posted_by', 'posted_at', 'is_void', 'voided_by',
     'voided_at', 'void_reason',
 ])]
+// Mewakili satu rincian biaya dalam folio.
 class FolioItem extends Model
 {
     public function folio(): BelongsTo

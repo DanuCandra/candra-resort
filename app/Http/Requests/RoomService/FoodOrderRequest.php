@@ -5,6 +5,7 @@ namespace App\Http\Requests\RoomService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+// Memvalidasi keranjang pesanan makanan tamu.
 class FoodOrderRequest extends FormRequest
 {
     public function authorize(): bool

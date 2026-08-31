@@ -11,6 +11,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
+// Mendaftarkan layanan dan konfigurasi global aplikasi.
 class AppServiceProvider extends ServiceProvider
 {
     /**

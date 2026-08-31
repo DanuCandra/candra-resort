@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['room_type_id', 'name', 'start_date', 'end_date', 'days_of_week', 'price_per_night', 'priority', 'is_active', 'created_by'])]
+// Mewakili tarif khusus suatu tipe kamar.
 class RoomRate extends Model
 {
     use SoftDeletes;

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+// Mengelola layanan hotel yang dapat dipesan tamu.
 class HotelServiceController extends Controller
 {
     public function index(Request $request): View

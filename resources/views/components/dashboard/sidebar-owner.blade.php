@@ -11,7 +11,7 @@
         ['Laporan Pendapatan', 'ti-chart-line', 'owner.reports.revenue'],
         ['Laporan Pembayaran', 'ti-credit-card', 'owner.reports.payments'],
         ['Laporan Layanan', 'ti-report-analytics', 'owner.reports.services'],
-        ['Laporan Bulanan', 'ti-calendar-month', 'owner.reports.monthly'],
+        ['Laporan Bulanan', 'ti-calendar-event', 'owner.reports.monthly'],
     ] as [$label, $icon, $route])
         <li class="sidebar-item">
             <a class="sidebar-link {{ request()->routeIs($route) ? 'active' : '' }}" href="{{ route($route) }}">
@@ -20,5 +20,5 @@
         </li>
     @endforeach
     <li class="nav-small-cap"><i class="ti ti-dots nav-small-cap-icon fs-4"></i><span class="hide-menu">Manajemen</span></li>
-    <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('owner.receptionists.*')?'active':'' }}" href="{{ route('owner.receptionists.index') }}"><span><i class="ti ti-user-cog"></i></span><span class="hide-menu">Receptionist</span></a></li>
+    <li class="sidebar-item"><a class="sidebar-link {{ request()->routeIs('owner.receptionists.*')?'active':'' }}" href="{{ route('owner.receptionists.index') }}"><span><i class="ti ti-users"></i></span><span class="hide-menu">Receptionist</span></a></li>
 </ul>

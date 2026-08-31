@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['room_id', 'old_status', 'new_status', 'changed_by', 'reason', 'changed_at'])]
+// Mewakili riwayat perubahan status kamar.
 class RoomStatusHistory extends Model
 {
     public $timestamps = false;

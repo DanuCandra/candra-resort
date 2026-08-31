@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['name', 'slug', 'description', 'is_active', 'sort_order'])]
+// Mewakili kategori makanan dan minuman.
 class FoodCategory extends Model
 {
     use SoftDeletes;

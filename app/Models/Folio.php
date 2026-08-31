@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'discount_amount', 'service_charge_amount', 'tax_amount', 'total_amount',
     'paid_amount', 'balance_amount', 'closed_at', 'closed_by',
 ])]
+// Mewakili tagihan berjalan selama masa inap.
 class Folio extends Model
 {
     public function stay(): BelongsTo

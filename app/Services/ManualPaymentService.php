@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Mencatat dan menghitung pembayaran manual.
 class ManualPaymentService
 {
     public function record(

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Receptionist;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Memvalidasi gambar dan informasi galeri.
 class GalleryImageRequest extends FormRequest
 {
     public function authorize(): bool

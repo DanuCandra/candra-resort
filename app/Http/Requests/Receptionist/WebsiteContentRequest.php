@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
+// Memvalidasi konten dinamis website.
 class WebsiteContentRequest extends FormRequest
 {
     public function authorize(): bool

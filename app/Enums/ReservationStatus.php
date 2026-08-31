@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan tahapan status reservasi kamar.
 enum ReservationStatus: string
 {
     case PendingPayment = 'pending_payment';

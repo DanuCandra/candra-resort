@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+// Menampilkan dan mengekspor laporan bisnis hotel.
 class ReportController extends Controller
 {
     private const TYPES = ['reservations', 'occupancy', 'revenue', 'payments', 'services', 'monthly'];

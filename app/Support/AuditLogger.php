@@ -6,6 +6,7 @@ use App\Models\AuditLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
+// Mencatat aktivitas penting tanpa data sensitif.
 class AuditLogger
 {
     public static function record(

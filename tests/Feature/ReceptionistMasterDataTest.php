@@ -225,7 +225,14 @@ class ReceptionistMasterDataTest extends TestCase
         $plainToken = session('room_service_access_token');
         $this->assertNotSame($plainToken, $access->session_token);
         $this->assertSame(hash('sha256', $plainToken), $access->session_token);
-        $this->get(route('room-service.home'))->assertOk()->assertSee('Kamar RS-701');
+        $this->get(route('room-service.home'))
+            ->assertOk()
+            ->assertSee('Kamar RS-701')
+            ->assertSee('id="room-service-portal"', false)
+            ->assertSee('Apa yang Anda butuhkan?')
+            ->assertSee('Pantau Aktivitas')
+            ->assertSee('Saldo berjalan')
+            ->assertSee('Keluar dari portal');
     }
 
     public function test_regenerating_room_qr_revokes_existing_room_service_access(): void

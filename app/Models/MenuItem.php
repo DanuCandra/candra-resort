@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'food_category_id', 'name', 'slug', 'description', 'price', 'image_path',
     'preparation_minutes', 'is_available', 'is_active', 'sort_order',
 ])]
+// Mewakili menu makanan atau minuman.
 class MenuItem extends Model
 {
     use SoftDeletes;

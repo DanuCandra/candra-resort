@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\RoomService;
 
+use App\Enums\FoodOrderStatus;
+use App\Enums\GuestRequestStatus;
+use App\Enums\ServiceOrderStatus;
 use App\Enums\StayStatus;
 use App\Http\Controllers\Controller;
 use App\Models\GuestRoomAccess;
@@ -14,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+// Menangani verifikasi QR dan sesi portal layanan kamar.
 class AccessController extends Controller
 {
     public function show(string $qrToken): View
@@ -59,9 +63,34 @@ class AccessController extends Controller
     public function home(Request $request): View
     {
         $access = $request->attributes->get('roomServiceAccess');
-        $access->load(['stay.folio', 'room.roomType']);
+        $access->load(['stay.folio', 'stay.reservation', 'room.roomType']);
+        $stay = $access->stay;
+        $portalSummary = [
+            'active_food_orders' => $stay->foodOrders()->whereIn('status', [
+                FoodOrderStatus::Requested->value,
+                FoodOrderStatus::Accepted->value,
+                FoodOrderStatus::Processing->value,
+            ])->count(),
+            'active_service_orders' => $stay->serviceOrders()->whereIn('status', [
+                ServiceOrderStatus::Requested->value,
+                ServiceOrderStatus::Accepted->value,
+                ServiceOrderStatus::Scheduled->value,
+                ServiceOrderStatus::Processing->value,
+            ])->count(),
+            'active_requests' => $stay->guestRequests()->whereIn('status', [
+                GuestRequestStatus::Requested->value,
+                GuestRequestStatus::Accepted->value,
+                GuestRequestStatus::Processing->value,
+            ])->count(),
+            'balance' => (float) ($stay->folio?->balance_amount ?? 0),
+        ];
+        $recentActivity = [
+            'food' => $stay->foodOrders()->with('items')->latest('ordered_at')->first(),
+            'service' => $stay->serviceOrders()->with('service')->latest()->first(),
+            'request' => $stay->guestRequests()->latest('requested_at')->first(),
+        ];
 
-        return view('room-service.home', compact('access'));
+        return view('room-service.home', compact('access', 'portalSummary', 'recentActivity'));
     }
 
     public function destroy(Request $request): RedirectResponse

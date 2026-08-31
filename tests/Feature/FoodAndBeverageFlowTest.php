@@ -61,6 +61,23 @@ class FoodAndBeverageFlowTest extends TestCase
             ->assertSee('Foto menu');
     }
 
+    public function test_verified_room_guest_sees_interactive_menu_and_same_page_cart(): void
+    {
+        [, $plainToken] = $this->activeAccess();
+        $item = $this->menuItem(75000);
+
+        $this->withSession(['room_service_access_token' => $plainToken])
+            ->get(route('room-service.food.index'))
+            ->assertOk()
+            ->assertSee($item->name)
+            ->assertSee('data-cart-action="increment"', false)
+            ->assertSee('data-cart-action="decrement"', false)
+            ->assertSee('id="food-cart"', false)
+            ->assertSee('id="cart-total"', false)
+            ->assertSee('name="items['.$item->id.'][quantity]"', false)
+            ->assertSee('Catatan pengantaran');
+    }
+
     public function test_verified_room_guest_can_order_with_price_and_name_snapshots(): void
     {
         [$access, $plainToken] = $this->activeAccess();
@@ -84,6 +101,28 @@ class FoodAndBeverageFlowTest extends TestCase
             'subtotal' => 150000,
             'special_notes' => 'Tidak pedas',
         ]);
+    }
+
+    public function test_room_guest_can_monitor_food_orders_with_summary_timeline_and_status_filter(): void
+    {
+        [, $plainToken] = $this->activeAccess();
+        $item = $this->menuItem(75000);
+
+        $this->withSession(['room_service_access_token' => $plainToken])
+            ->post(route('room-service.food.store'), [
+                'items' => [$item->id => ['quantity' => 2]],
+            ]);
+
+        $order = FoodOrder::latest('id')->firstOrFail();
+
+        $this->withSession(['room_service_access_token' => $plainToken])
+            ->get(route('room-service.food.orders', ['status' => 'requested']))
+            ->assertOk()
+            ->assertSee('id="food-tracking-page"', false)
+            ->assertSee('Ringkasan Pesanan')
+            ->assertSee('class="order-progress"', false)
+            ->assertSee($order->order_code)
+            ->assertSee('Pantau Pesanan Makanan');
     }
 
     public function test_completed_order_is_posted_once_to_folio_after_valid_transitions(): void

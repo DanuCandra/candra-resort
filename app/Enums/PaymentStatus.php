@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan pilihan status resmi untuk transaksi pembayaran.
 enum PaymentStatus: string
 {
     case Pending = 'pending';

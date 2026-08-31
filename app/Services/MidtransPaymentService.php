@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Mengelola transaksi dan notifikasi pembayaran Midtrans.
 class MidtransPaymentService
 {
     public function __construct(private readonly MidtransGateway $gateway) {}

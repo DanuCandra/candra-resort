@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'minimum_transaction', 'starts_at', 'ends_at', 'usage_quota', 'used_count',
     'max_usage_per_guest', 'is_active', 'created_by',
 ])]
+// Mewakili kode dan aturan promosi.
 class Promotion extends Model
 {
     use SoftDeletes;

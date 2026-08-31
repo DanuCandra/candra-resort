@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+// Menampilkan folio dan mencatat pembayaran tagihan tamu.
 class FolioController extends Controller
 {
     public function index(Request $request): View

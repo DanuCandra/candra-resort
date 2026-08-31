@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// Menyimpan tahapan status pesanan layanan hotel.
 enum ServiceOrderStatus: string
 {
     case Requested = 'requested';

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+// Membuat dan memproses status permintaan tamu.
 class GuestRequestService
 {
     public function place(GuestRoomAccess $access, array $data): GuestRequest

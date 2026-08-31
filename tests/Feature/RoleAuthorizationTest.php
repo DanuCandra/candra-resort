@@ -17,7 +17,12 @@ class RoleAuthorizationTest extends TestCase
         $owner = User::factory()->owner()->create();
 
         $this->actingAs($guest)->get(route('guest.dashboard'))->assertOk()->assertSee('Reservasi Terbaru');
-        $this->actingAs($receptionist)->get(route('receptionist.dashboard'))->assertOk()->assertSee('Dashboard Operasional');
+        $this->actingAs($receptionist)->get(route('receptionist.dashboard'))
+            ->assertOk()
+            ->assertSee('Dashboard Operasional')
+            ->assertSee('id="reception-command-center"', false)
+            ->assertSee('Antrean Operasional')
+            ->assertSee('Pusat Kerja Receptionist');
         $this->actingAs($owner)->get(route('owner.dashboard'))->assertOk()->assertSee('Business Overview');
     }
 

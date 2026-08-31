@@ -8,6 +8,7 @@ use App\Services\MidtransPaymentService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+// Menampilkan dan menyiapkan pembayaran reservasi Guest.
 class PaymentController extends Controller
 {
     public function show(Request $request, Reservation $reservation, MidtransPaymentService $service): View

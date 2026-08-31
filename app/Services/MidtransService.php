@@ -7,6 +7,7 @@ use Midtrans\Config;
 use Midtrans\Snap;
 use RuntimeException;
 
+// Menghubungkan aplikasi dengan SDK Midtrans.
 class MidtransService implements MidtransGateway
 {
     public function createSnapToken(array $parameters): string

@@ -11,6 +11,7 @@ use App\Models\RoomType;
 use App\Models\WebsiteContent;
 use Illuminate\View\View;
 
+// Menampilkan landing page publik Candra Resort.
 class HomeController extends Controller
 {
     public function __invoke(): View
